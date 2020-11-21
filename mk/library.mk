@@ -5,22 +5,26 @@
 LIB_NAME    ?=
 LIB_VERSION ?=
 ENCODING    ?=
-PKG_URL     ?=
 DK_VERSION  ?=
 LIB_DEPS    ?=
+LIB_ORIGIN  ?=
+TOOLING     ?=
 
 # Global variables
-PREFIX      ?= /usr/local/share/logipedia/
+PREFIX      = /usr/local/share/logipedia/
+LIB_PATH    = http://www.lsv.fr/~hondet/nubo/
 
-# System binaries
-FETCH_CMD = curl -o "${LIB_NAME}-${LIB_VERSION}-${ENCODING}.tgz"
+# Binaries
+FETCH_CMD = curl
+TAR       = tar
 
 ###
 ### End of variable setup. Only targets now.
 ###
 
 download:
-	${FETCH_CMD} "${PKG_URL}"
+	${FETCH_CMD} ${LIB_PATH}/${LIB_NAME}-${LIB_VERSION}-${ENCODING}.tgz | \
+${TAR} xz
 
 install:
 	# TODO

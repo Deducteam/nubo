@@ -46,15 +46,16 @@ We provide here a description of the fields contained in a blueprint.
 - `LIB_NAME`: name of the library, in the folder hierarchy, `libA` is such a
   library name.
 
-- `LIB_VERSION`: version of the library (appears in the directory hierarchy).
+- `LIB_VERSION`: version of the library.
 
-- `LIB_SRC`: location of the library
+- `LIB_ORIGIN`: URL to the original files of the library, as distributed by the
+  authors.
 
 - `ENCODING`: name of the encoding in which the proofs are stated.
 
-- `PKG_URL`, `PKG_DOI`: location of the proof package, can be either a plain
-  url with `PKG_URL`, or a Digital Object Identifier if the proof package has
-  one.
+- `LIB_PATH`: path where the proof packages can be retrieved. Full URL to proof
+  packages becomes `${LIB_PATH}/<libpath>` where _libpath_ is a tree location
+  for the library.
 
 - `DK_VERSION`: a string of the form `version:git_id`, where `version` is `2`
   or `3` that indicate whether proofs can be proof checked with Dedukti2.X or
@@ -65,11 +66,14 @@ We provide here a description of the fields contained in a blueprint.
   `<version>` is its version used. The format of the version may depend on the
   source of the tool. If the tool is stored on git, a commit hash, or tag, or
   branch name may be provided. Tools are referenced in `nubo/tools.md`.
-
-Proof package name specification
+  
+Proof library path specification
 --------------------------------
 
-Each library package has a name which consists in 3 parth
+Proof library name specification
+--------------------------------
+
+Each library has a name which consists of 3 parts
 
 ```
 stem-version-encoding
@@ -95,7 +99,16 @@ _This section is based on the manual page packages-specs(7) of OpenBSD_
 Tooling specification
 ---------------------
 
-TODO
+The file `TOOLS` gathers information on the tools that may be used to translate
+proofs or to operate on translated proofs. It follows the [record jar][1] 
+format.
+
+A record must at least contain the fields 'name' and 'homepage'. Any other field
+is optional.
+
+- 'name': a unique name that identifies the tool.
+
+- 'homepage': URL of the homepage of the tool from where it can be downloaded.
 
 Proof package format
 --------------------
@@ -106,11 +119,9 @@ How to use this repository
 --------------------------
 
 TODO
-
-TODO
 ----
 
 - Possibility to setup a central repository such that downloading proof package
   `lib-0.1-enc.tgz` is as easy as `wget REPO/lib-0.1-enc.tgz`.
 
-- Replicate the `pkgpagth` field of OpenBSD
+[1]: https://tools.ietf.org/html/draft-phillips-record-jar-01
