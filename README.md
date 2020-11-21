@@ -4,44 +4,15 @@ Nubo: a repository for Dedukti proof blueprints
 This repository centralises meta data concerning Dedukti proofs. These metadata
 ought to be structured enough so that proofs may be used practically.
 
-File system structure
----------------------
+Blueprints specification
+------------------------
 
-We denote by `nubo` the root directory of this repository. The repository
-is structured the following way
-```
-|- README.md
-|- libA
-   |- 1.0
-      |- encoding1
-         |- Makefile
-      |- encoding2
-         |- Makefile
-   |- 1.1
-      |- encoding1
-         |- Makefile
-|- libB
-   |- ...
-```
+We call *blueprint* a file that identifies a library that has been translated
+into Dedukti. A *blueprint* contains meta data concerning the library that
+allows to check that the library can be type checked by Dedukti.
 
-where each `libX` is a library that has been translated. Theses libraries may
-exist in several version, which are kept in parallel for dependencies issues
-(we may want to use a library `libX-1.0` that depends on `libY-v` with `v <=
-1.1` even though `libY-2.0` has been released and translated).
-Each library may be translated into several encodings, or several encoded
-_theories_. Folders `encodingX` denote such encodings.
-
-The leaves of the structure are the blueprints, or meta data files. They
-consist in a sequence of variable declarations that uniquely determine and
-should at least specify how to type check these proofs.
-
-Proofs are stored elsewhere, in the form of proof packages. These packages must
-follow a standard as well.
-
-Blueprints data
----------------
-
-We provide here a description of the fields contained in a blueprint.
+Currently, a *blueprint* is a BSD flavoured [Makefile][2] (see [[3]] for POSIX
+makefiles) that define a set of variables.
 
 - `LIB_NAME`: name of the library, in the folder hierarchy, `libA` is such a
   library name.
@@ -67,8 +38,44 @@ We provide here a description of the fields contained in a blueprint.
   source of the tool. If the tool is stored on git, a commit hash, or tag, or
   branch name may be provided. Tools are referenced in `nubo/tools.md`.
   
+**Note:**
+These variables not only serve informative purposes, they can be used to fulfill
+miscellaneous tasks using targets defined in `mk/library.mk`. More information
+on these targets are given in
+[How to use this repository](#how-to-use-this-repository).
+  
 Proof library path specification
 --------------------------------
+
+Each location in the library tree is uniquely identified through a *libpath*
+which encodes the directory that allows to install a proof library.
+
+Every *libpath* conforms to the pattern `name/version/encoding`. The `name` part
+refers to the name of the library, as defined by the variable `LIB_NAME` of the
+blueprint. The `version` part refers to a version of the library, as defined by
+the variable `LIB_VERSION` of the blueprint. The `encoding` part refers to the
+encoding into which the proofs are stated, as defined by the variable `ENCODING`
+of the blueprint.
+
+Such a *libpath* allows to find the package under the library tree.
+
+For instance, `arith_fermat/1.0/sttfa` is the location of the library
+`arith_fermat` encoded into `sttfa` in version `1.0`.
+
+As an example, the overall structure of the library tree may look like this,
+```
+|- libA
+   |- 1.0
+      |- encoding1
+         |- Makefile
+      |- encoding2
+         |- Makefile
+   |- 1.1
+      |- encoding1
+         |- Makefile
+|- libB
+   |- ...
+```
 
 Proof library name specification
 --------------------------------
@@ -125,3 +132,5 @@ TODO
   `lib-0.1-enc.tgz` is as easy as `wget REPO/lib-0.1-enc.tgz`.
 
 [1]: https://tools.ietf.org/html/draft-phillips-record-jar-01
+[2]: https://man.openbsd.org/make.1
+[3]: https://pubs.opengroup.org/onlinepubs/009695299/utilities/make.html
