@@ -22,8 +22,6 @@ makefiles) that define a set of variables.
 - `LIB_ORIGIN`: URL to the original files of the library, as distributed by the
   authors.
 
-- `ENCODING`: name of the encoding in which the proofs are stated.
-
 - `LIB_PATH`: path where the proof packages can be retrieved. Full URL to proof
   packages becomes `${LIB_PATH}/<libpath>` where _libpath_ is a tree location
   for the library.
@@ -50,28 +48,27 @@ Proof library path specification
 Each location in the library tree is uniquely identified through a *libpath*
 which encodes the directory that allows to install a proof library.
 
-Every *libpath* conforms to the pattern `name/version/encoding`. The `name` part
+Every *libpath* conforms to the pattern `name/version/flavour`. The `name` part
 refers to the name of the library, as defined by the variable `LIB_NAME` of the
 blueprint. The `version` part refers to a version of the library, as defined by
-the variable `LIB_VERSION` of the blueprint. The `encoding` part refers to the
-encoding into which the proofs are stated, as defined by the variable `ENCODING`
-of the blueprint.
+the variable `LIB_VERSION` of the blueprint. The `flavour` denotes some options
+used in the generation of the library.
 
 Such a *libpath* allows to find the package under the library tree.
 
 For instance, `arith_fermat/1.0/sttfa` is the location of the library
-`arith_fermat` encoded into `sttfa` in version `1.0`.
+`arith_fermat` version `1.0` translated with library `sttfa` as a dependency.
 
 As an example, the overall structure of the library tree may look like this,
 ```
 |- libA
    |- 1.0
-      |- encoding1
+      |- flav1
          |- Makefile
-      |- encoding2
+      |- flav2
          |- Makefile
    |- 1.1
-      |- encoding1
+      |- flav1
          |- Makefile
 |- libB
    |- ...
@@ -83,7 +80,7 @@ Proof library name specification
 Each library has a name which consists of 3 parts
 
 ```
-stem-version-encoding
+stem-version-flavour
 ```
 
 The _stem_ part identifies the library. It may contain dashes.
@@ -91,8 +88,10 @@ The _stem_ part identifies the library. It may contain dashes.
 The _version_ part starts at the first digit that follows a `-` and goes up to
 the following `-`.
 
-The remaining _encoding_ part identifies an encoding in which the proofs are
-stated.
+The remaining _flavour_ part identifies the flavour of the package.
+
+The _version_ part must start with a digit, whereas the _flavour_ must not
+start with a digit.
 
 All packages must have a version number. Normally, the version number directly
 matches the original library version number, or release date. In case there are
@@ -150,11 +149,13 @@ Notes
 It is the user's responsability to install softwares and
 [tools](#tooling-specification) in their appropriate version.
 
-TODO
-----
+Upcoming
+--------
 
-- Possibility to setup a central repository such that downloading proof package
+- Setup a central repository such that downloading proof package
   `lib-0.1-enc.tgz` is as easy as `wget REPO/lib-0.1-enc.tgz`.
+  
+- Add a tool to resolve dependencies and install recursively libraries needed.
 
 [1]: https://tools.ietf.org/html/draft-phillips-record-jar-01
 [2]: https://man.openbsd.org/make.1
