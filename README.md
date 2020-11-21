@@ -110,7 +110,7 @@ The file `TOOLS` gathers information on the tools that may be used to translate
 proofs or to operate on translated proofs. It follows the [record jar][1] 
 format.
 
-A record must at least contain the fields 'name' and 'homepage'. Any other field
+A record must at least contain the fields `name` and `homepage`. Any other field
 is optional.
 
 - `name`: a unique name that identifies the tool.
@@ -120,7 +120,7 @@ is optional.
 Packaged libraries
 ------------------
 
-Libraries that have been translated to Dedukti are *packaged* into gzipped
+Libraries that have been translated to Dedukti are packaged into gzipped
 tarballs for easy access. Each library that is identified by a
 [library name specification](#proof-library-name-specification) `libspec` is
 packaged as `libspec.tgz`. Such an archives contains all files that constitutes
@@ -134,8 +134,8 @@ TODO
 Notes
 -----
 
-The installation of softwares and [tools](#tooling-specification) is the
-responsibility of the user.
+It is the user's responsability to install softwares and
+[tools](#tooling-specification) in their appropriate version.
 
 TODO
 ----
