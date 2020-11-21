@@ -123,13 +123,26 @@ Packaged libraries
 Libraries that have been translated to Dedukti are packaged into gzipped
 tarballs for easy access. Each library that is identified by a
 [library name specification](#proof-library-name-specification) `libspec` is
-packaged as `libspec.tgz`. Such an archives contains all files that constitutes
+packaged as `libspec.tgz`. Such an archives contains all files that constitute
 the library.
 
 How to use this repository
 --------------------------
 
-TODO
+The library tree can be used to install, check or package libraries. These
+operations are carried out using `make` and the targets defined in
+`mk/library.mk`. The targets depend on the variables defined by
+[blueprints](#bluprints-specification). These target are made available for
+each library by including `mk/library.mk` _at the end_ of blueprints. Note
+that makefiles are written using BSD make, Linux users may hence have to use
+`bmake`.
+
+For example, to download `arith_fermat-1.0-sttfa`,
+
+``` sh
+cd arith_fermat/1.0/sttfa
+make download
+```
 
 Notes
 -----
