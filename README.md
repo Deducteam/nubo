@@ -88,8 +88,8 @@ stem-version-encoding
 
 The _stem_ part identifies the library. It may contain dashes.
 
-The _version_ part starts at the first digit that follows a '-' and goes up to
-the following '-'.
+The _version_ part starts at the first digit that follows a `-` and goes up to
+the following `-`.
 
 The remaining _encoding_ part identifies an encoding in which the proofs are
 stated.
@@ -97,7 +97,7 @@ stated.
 All packages must have a version number. Normally, the version number directly
 matches the original library version number, or release date. In case there are
 substantial changes in the translated library, a patch level marker should be
-appended (e.g. 'p0', 'p1', &c.).
+appended (e.g. `p0`, `p1`, &c.).
 
 Version comparison is done using a lexicographic alphabetic order.
 
@@ -113,17 +113,29 @@ format.
 A record must at least contain the fields 'name' and 'homepage'. Any other field
 is optional.
 
-- 'name': a unique name that identifies the tool.
+- `name`: a unique name that identifies the tool.
 
-- 'homepage': URL of the homepage of the tool from where it can be downloaded.
+- `homepage`: URL of the homepage of the tool from where it can be downloaded.
 
-Proof package format
---------------------
+Packaged libraries
+------------------
 
-TODO
+Libraries that have been translated to Dedukti are *packaged* into gzipped
+tarballs for easy access. Each library that is identified by a
+[library name specification](#proof-library-name-specification) `libspec` is
+packaged as `libspec.tgz`. Such an archives contains all files that constitutes
+the library.
 
 How to use this repository
 --------------------------
+
+TODO
+
+Notes
+-----
+
+The installation of softwares and [tools](#tooling-specification) is the
+responsibility of the user.
 
 TODO
 ----
