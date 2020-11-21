@@ -19,11 +19,13 @@ makefiles) that define a set of variables.
 
 - `LIB_VERSION`: version of the library.
 
+- `LIB_FLAVOUR`: denotes some options used in the generation of the library.
+
 - `LIB_ORIGIN`: URL to the original files of the library, as distributed by the
   authors.
 
-- `LIB_PATH`: path where the proof packages can be retrieved. Full URL to proof
-  packages becomes `${LIB_PATH}/<libpath>` where _libpath_ is a tree location
+- `PKG_PATH`: path where the proof packages can be retrieved. Full URL to proof
+  packages becomes `${PKG_PATH}/<libpath>` where _libpath_ is a tree location
   for the library.
 
 - `DK_VERSION`: a string of the form `version:git_id`, where `version` is `2`

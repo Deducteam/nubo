@@ -4,15 +4,16 @@
 # Targets and meta data specifications, defined by each library
 LIB_NAME    ?=
 LIB_VERSION ?=
-ENCODING    ?=
+LIB_FLAVOUR ?=
+LIB_MD5     ?=
 DK_VERSION  ?=
-LIB_DEPS    ?=
+LIB_DEPENDS ?=
 LIB_ORIGIN  ?=
 TOOLING     ?=
 
 # Global variables
-PREFIX   ?= /usr/local/share/logipedia/
-LIB_PATH ?= http://www.lsv.fr/~hondet/nubo/
+PREFIX   ?= /usr/local/share/nubo/
+PKG_PATH ?= http://www.lsv.fr/~hondet/nubo/
 
 # Binaries
 FETCH_CMD ?= curl
@@ -23,9 +24,9 @@ TAR       ?= tar
 ###
 
 download:
-	mkdir -p ${LIB_NAME}-${LIB_VERSION}-${ENCODING}/
-	${FETCH_CMD} ${LIB_PATH}/${LIB_NAME}-${LIB_VERSION}-${ENCODING}.tgz | \
-${TAR} xz -C ${LIB_NAME}-${LIB_VERSION}-${ENCODING}/
+	mkdir -p ${LIB_NAME}-${LIB_VERSION}-${LIB_FLAVOUR}/
+	${FETCH_CMD} ${PKG_PATH}/${LIB_NAME}-${LIB_VERSION}-${LIB_FLAVOUR}.tgz | \
+${TAR} xz -C ${LIB_NAME}-${LIB_VERSION}-${LIB_FLAVOUR}/
 
 check:
 	# TODO
