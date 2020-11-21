@@ -4,8 +4,8 @@ Nubo: a repository for Dedukti proof blueprints
 This repository centralises meta data concerning Dedukti proofs. These metadata
 ought to be structured enough so that proofs may be used practically.
 
-Blueprints specification
-------------------------
+Blueprint specification
+-----------------------
 
 We call *blueprint* a file that identifies a library that has been translated
 into Dedukti. A *blueprint* contains meta data concerning the library that
@@ -14,8 +14,7 @@ allows to check that the library can be type checked by Dedukti.
 Currently, a *blueprint* is a BSD flavoured [Makefile][2] (see [[3]] for POSIX
 makefiles) that define a set of variables.
 
-- `LIB_NAME`: name of the library, in the folder hierarchy, `libA` is such a
-  library name.
+- `LIB_NAME`: identify the library.
 
 - `LIB_VERSION`: version of the library.
 
@@ -44,22 +43,50 @@ miscellaneous tasks using targets defined in `mk/library.mk`. More information
 on these targets are given in
 [How to use this repository](#how-to-use-this-repository).
   
+Proof library name specification
+--------------------------------
+
+Each library has a name which consists of 3 parts
+
+```
+stem-version-flavour
+```
+
+The _stem_ part identifies the library and refers to the variable `LIB_NAME` of
+the blueprint. It may contain dashes.
+
+The _version_ part starts at the first digit that follows a `-` and goes up to
+the following `-`. It refers to the variable `LIB_VERSION` of the blueprint.
+
+The remaining _flavour_ part refers to the variable `LIB_FLAVOUR` of the
+blueprint.
+
+The _version_ part must start with a digit, whereas the _flavour_ must not
+start with a digit.
+
+All packages must have a version number. Normally, the version number directly
+matches the original library version number, or release date. In case there are
+substantial changes in the translated library, a patch level marker should be
+appended (e.g. `p0`, `p1`, &c.).
+
+Version comparison is done using a lexicographic alphabetic order.
+
+_This section is based on the manual page packages-specs(7) of OpenBSD_
+
 Proof library path specification
 --------------------------------
 
-Each location in the library tree is uniquely identified through a *libpath*
+Each location in the library tree is uniquely identified by a *libpath*
 which encodes the directory that allows to install a proof library.
 
-Every *libpath* conforms to the pattern `name/version/flavour`. The `name` part
-refers to the name of the library, as defined by the variable `LIB_NAME` of the
-blueprint. The `version` part refers to a version of the library, as defined by
-the variable `LIB_VERSION` of the blueprint. The `flavour` denotes some options
-used in the generation of the library.
+Every *libpath* conforms to the pattern `stem/version/flavour` where
+`stem`, `version` and `flavour` are defined in the
+[name specification](#proof-library-name-specification).
 
 Such a *libpath* allows to find the package under the library tree.
 
 For instance, `arith_fermat/1.0/sttfa` is the location of the library
-`arith_fermat` version `1.0` translated with library `sttfa` as a dependency.
+`arith_fermat` version `1.0` in its `sttfa` flavour.
 
 As an example, the overall structure of the library tree may look like this,
 ```
@@ -75,34 +102,6 @@ As an example, the overall structure of the library tree may look like this,
 |- libB
    |- ...
 ```
-
-Proof library name specification
---------------------------------
-
-Each library has a name which consists of 3 parts
-
-```
-stem-version-flavour
-```
-
-The _stem_ part identifies the library. It may contain dashes.
-
-The _version_ part starts at the first digit that follows a `-` and goes up to
-the following `-`.
-
-The remaining _flavour_ part identifies the flavour of the package.
-
-The _version_ part must start with a digit, whereas the _flavour_ must not
-start with a digit.
-
-All packages must have a version number. Normally, the version number directly
-matches the original library version number, or release date. In case there are
-substantial changes in the translated library, a patch level marker should be
-appended (e.g. `p0`, `p1`, &c.).
-
-Version comparison is done using a lexicographic alphabetic order.
-
-_This section is based on the manual page packages-specs(7) of OpenBSD_
 
 Tooling specification
 ---------------------
@@ -126,6 +125,10 @@ tarballs for easy access. Each library that is identified by a
 [library name specification](#proof-library-name-specification) `libspec` is
 packaged as `libspec.tgz`. Such an archives contains all files that constitute
 the library.
+
+For instance, the archive of `arith_fermat-1.0-sttfa` is available at
+`${PKG_PATH}/arith_fermat-1.0-sttfa.tgz` where `${PKG_PATH}` is a global
+variable that contain the address of a repository where archives are stored.
 
 How to use this repository
 --------------------------
@@ -157,7 +160,11 @@ Upcoming
 - Setup a central repository such that downloading proof package
   `lib-0.1-enc.tgz` is as easy as `wget REPO/lib-0.1-enc.tgz`.
   
-- Add a tool to resolve dependencies and install recursively libraries needed.
+- Implement automated type checking of libraries (target `check` of
+  `library.mk`), possibly by providing a script alongside the `Makefile`
+  
+- Add a tool to resolve dependencies and install recursively libraries needed
+  (script probably).
 
 [1]: https://tools.ietf.org/html/draft-phillips-record-jar-01
 [2]: https://man.openbsd.org/make.1
