@@ -20,12 +20,11 @@ makefiles) that define a set of variables.
 
 - `LIB_FLAVOUR`: denotes some options used in the generation of the library.
 
+- `LIB_DEPENDS`: a list of [library paths](#proof-library-path-specification) on
+  which the library depends.
+
 - `LIB_ORIGIN`: URL to the original files of the library, as distributed by the
   authors.
-
-- `PKG_PATH`: path where the proof packages can be retrieved. Full URL to proof
-  packages becomes `${PKG_PATH}/<libpath>` where _libpath_ is a tree location
-  for the library.
 
 - `DK_VERSION`: a string of the form `version:git_id`, where `version` is `2`
   or `3` that indicate whether proofs can be proof checked with Dedukti2.X or
@@ -79,27 +78,29 @@ Proof library path specification
 Each location in the library tree is uniquely identified by a *libpath*
 which encodes the directory that allows to install a proof library.
 
-Every *libpath* conforms to the pattern `stem/version/flavour` where
-`stem`, `version` and `flavour` are defined in the
-[name specification](#proof-library-name-specification).
+Every *libpath* conforms to the pattern `cat/stem/flavour,version` 
+where `stem`, `version` and `flavour` are defined in the
+[name specification](#proof-library-name-specification). The `cat` part
+refers to the first directory at the root of the library tree.
 
 Such a *libpath* allows to find the package under the library tree.
 
-For instance, `arith_fermat/1.0/sttfa` is the location of the library
+For instance, `arithmetic/arith_fermat/sttfa,1.0` is the location of the library
 `arith_fermat` version `1.0` in its `sttfa` flavour.
 
 As an example, the overall structure of the library tree may look like this,
 ```
-|- libA
-   |- 1.0
-      |- flav1
+|- encodings
+   |- libA
+      |- flavA,1.0
          |- Makefile
-      |- flav2
+      |- flavA,1.1
          |- Makefile
-   |- 1.1
-      |- flav1
+      |- flavB,1.0
          |- Makefile
-|- libB
+   |- libB
+      |- ...
+|- arithmetic
    |- ...
 ```
 
@@ -134,8 +135,8 @@ How to use this repository
 --------------------------
 
 The library tree can be used to install, check or package libraries. These
-operations are carried out using `make` and the targets defined in
-`mk/library.mk`. The targets depend on the variables defined by
+operations are carried out using `make` with the targets defined in
+`mk/library.mk`. Targets depend on the variables defined by
 [blueprints](#bluprints-specification). These target are made available for
 each library by including `mk/library.mk` _at the end_ of blueprints. Note
 that makefiles are written using BSD make, Linux users may hence have to use
@@ -144,9 +145,25 @@ that makefiles are written using BSD make, Linux users may hence have to use
 For example, to download `arith_fermat-1.0-sttfa`,
 
 ``` sh
-cd arith_fermat/1.0/sttfa
+cd arithmetic/arith_fermat/sttfa,1.0
 make download
 ```
+
+Here follows a documentation of `mk/library.mk`.
+
+### Targets
+
+- `download`: TODO
+
+- `install`: TODO
+
+- `check`: TODO
+
+### Variables
+
+- `PKG_PATH`: path where the proof packages can be retrieved. Full URL to proof
+  packages becomes `${PKG_PATH}/<libpath>` where _libpath_ is a tree location
+  for the library.
 
 Notes
 -----
