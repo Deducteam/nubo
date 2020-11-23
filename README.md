@@ -19,12 +19,18 @@ makefiles) that define a set of variables.
 - `LIB_VERSION`: version of the library.
 
 - `LIB_FLAVOUR`: denotes some options used in the generation of the library.
+  This field is optional.
 
 - `LIB_DEPENDS`: a list of [library paths](#proof-library-path-specification) on
   which the library depends.
 
 - `LIB_ORIGIN`: URL to the original files of the library, as distributed by the
   authors.
+  
+- `ENCODING`: a list of [library path](#proof-library-path-specification) that
+  specifies the encoding into which proofs are stated. It must be a (possibly
+  empty) subset of `LIB_DEPENDS`. This field is meant to be used for
+  interoperability purposes.
 
 - `DK_VERSION`: a string of the form `version:git_id`, where `version` is `2`
   or `3` that indicate whether proofs can be proof checked with Dedukti2.X or
@@ -48,7 +54,7 @@ Proof library name specification
 Each library has a name which consists of 3 parts
 
 ```
-stem-version-flavour
+stem-version[-flavour]
 ```
 
 The _stem_ part identifies the library and refers to the variable `LIB_NAME` of
@@ -58,7 +64,7 @@ The _version_ part starts at the first digit that follows a `-` and goes up to
 the following `-`. It refers to the variable `LIB_VERSION` of the blueprint.
 
 The remaining _flavour_ part refers to the variable `LIB_FLAVOUR` of the
-blueprint.
+blueprint. It is optional.
 
 The _version_ part must start with a digit, whereas the _flavour_ must not
 start with a digit.
@@ -78,10 +84,11 @@ Proof library path specification
 Each location in the library tree is uniquely identified by a *libpath*
 which encodes the directory that allows to install a proof library.
 
-Every *libpath* conforms to the pattern `cat/stem/flavour,version` 
+Every *libpath* conforms to the pattern `cat/stem/[flavour,]version` 
 where `stem`, `version` and `flavour` are defined in the
 [name specification](#proof-library-name-specification). The `cat` part
-refers to the first directory at the root of the library tree.
+refers to the first directory at the root of the library tree. The `flavour,`
+part is optional.
 
 Such a *libpath* allows to find the package under the library tree.
 
@@ -92,6 +99,8 @@ As an example, the overall structure of the library tree may look like this,
 ```
 |- encodings
    |- libA
+      |- 1.0
+         |- Makefile
       |- flavA,1.0
          |- Makefile
       |- flavA,1.1
@@ -180,8 +189,10 @@ Upcoming
 - Implement automated type checking of libraries (target `check` of
   `library.mk`), possibly by providing a script alongside the `Makefile`
   
-- Add a tool to resolve dependencies and install recursively libraries needed
-  (script probably).
+- Add a tool to resolve dependencies and install recursively libraries needed.
+
+- Use another format than Makefile to have easily parsable meta data. Or
+  add target to generate json from makefile.
 
 [1]: https://tools.ietf.org/html/draft-phillips-record-jar-01
 [2]: https://man.openbsd.org/make.1

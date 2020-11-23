@@ -10,6 +10,7 @@ DK_VERSION  ?=
 LIB_DEPENDS ?=
 LIB_ORIGIN  ?=
 TOOLING     ?=
+ENCODING    ?=
 
 # Global variables
 PREFIX   ?= /usr/local/share/nubo/
@@ -24,9 +25,15 @@ TAR       ?= tar
 ###
 
 download:
+.if ${LIB_FLAVOUR}
 	mkdir -p ${LIB_NAME}-${LIB_VERSION}-${LIB_FLAVOUR}/
 	${FETCH_CMD} ${PKG_PATH}/${LIB_NAME}-${LIB_VERSION}-${LIB_FLAVOUR}.tgz | \
 ${TAR} xz -C ${LIB_NAME}-${LIB_VERSION}-${LIB_FLAVOUR}/
+.else
+	mkdir -p ${LIB_NAME}-${LIB_VERSION}/
+	${FETCH_CMD} ${PKG_PATH}/${LIB_NAME}-${LIB_VERSION}.tgz | \
+${TAR} xz -C ${LIB_NAME}-${LIB_VERSION}/
+.endif
 
 check:
 	# TODO
