@@ -1,4 +1,4 @@
-LIB_NAME    = ne
+LIB_NAME    = stte
 LIB_VERSION = 1.0
 LIB_FLAVOUR = u
 LIB_MD5     = # TODO
