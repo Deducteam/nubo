@@ -1,4 +1,5 @@
 (A) fill out meta data
 (B) add "#REQUIRE" commands
 (A) extract logic file
+add object files into archive
 remove "#NAME" command
