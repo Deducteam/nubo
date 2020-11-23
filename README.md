@@ -183,6 +183,8 @@ It is the user's responsability to install softwares and
 Upcoming
 --------
 
+- Add a maintainer for each library
+
 - Setup a central repository such that downloading proof package
   `lib-0.1-enc.tgz` is as easy as `wget REPO/lib-0.1-enc.tgz`.
   
