@@ -1,0 +1,4 @@
+(A) fill out meta data
+(B) add "#REQUIRE" commands
+(A) extract logic file
+remove "#NAME" command
