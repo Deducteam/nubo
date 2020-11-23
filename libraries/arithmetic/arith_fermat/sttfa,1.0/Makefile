@@ -9,4 +9,4 @@ TOOLING     = krajono:master universo:master
 LIB_DEPENDS = encodings/sttfa/1.0
 ENCODING    = encdoings/sttfa/1.0
 
-.include "../../../mk/library.mk"
+.include "../../../../mk/library.mk"

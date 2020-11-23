@@ -7,4 +7,4 @@ TOOLING     = # TODO
 LIB_DEPENDS = # TODO
 ENCODING    = # TODO
 
-.include "../../../mk/library.mk"
+.include "../../../../mk/library.mk"
