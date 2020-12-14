@@ -14,7 +14,7 @@ ENCODING    ?=
 
 # Global variables
 PREFIX   ?= /usr/local/share/nubo/
-PKG_PATH ?= http://www.lsv.fr/~hondet/nubo/
+PKG_PATH ?= http://logipedia.inria.fr/nubo/
 
 # Binaries
 FETCH_CMD ?= curl
