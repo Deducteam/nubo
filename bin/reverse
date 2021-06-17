@@ -1,0 +1,7 @@
+#!/bin/sh
+acc=
+for w in "$@"; do
+    acc="$w $acc"
+done
+# xargs trims spaces (and squishes spaces)
+echo "$acc" | xargs
