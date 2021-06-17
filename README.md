@@ -113,6 +113,9 @@ As an example, the overall structure of the library tree may look like this,
    |- ...
 ```
 
+**Note:** in the previous example, each `Makefile` is a
+[*blueprint*](#blueprint-specification).
+
 Tooling specification
 ---------------------
 
@@ -131,10 +134,20 @@ Packaged libraries
 ------------------
 
 Libraries that have been translated to Dedukti are packaged into gzipped
-tarballs for easy access. Each library that is identified by a
+tarballs with the extension `.tgz`.
+Each library identified by a
 [library name specification](#proof-library-name-specification) `libspec` is
-packaged as `libspec.tgz`. Such an archives contains all files that constitute
-the library.
+packaged as `libspec.tgz`. Such an archive must contain
+
+- the source files of the library (`.dk` files) and
+
+- a [Makefile][2] dependency list named `.depend` that provides the
+  dependencies between the source files of the library.
+
+The dependency list serves two purposes.
+The first is to provide the dependencies between source files so that they can
+be checked in an appropriate order. It also provides dependency for a (phony)
+target `all` that allows to check all the library at once.
 
 For instance, the archive of `arith_fermat-1.0-sttfa` is available at
 `${PKG_PATH}/arith_fermat-1.0-sttfa.tgz` where `${PKG_PATH}` is a global
@@ -185,12 +198,6 @@ Upcoming
 
 - Add a maintainer for each library
 
-- Setup a central repository such that downloading proof package
-  `lib-0.1-enc.tgz` is as easy as `wget REPO/lib-0.1-enc.tgz`.
-  
-- Implement automated type checking of libraries (target `check` of
-  `library.mk`), possibly by providing a script alongside the `Makefile`
-  
 - Add a tool to resolve dependencies and install recursively libraries needed.
 
 - Use another format than Makefile to have easily parsable meta data. Or
