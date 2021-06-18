@@ -81,14 +81,13 @@ _This section is based on the manual page packages-specs(7) of OpenBSD_
 Proof library path specification
 --------------------------------
 
-Each location in the library tree is uniquely identified by a *libpath*
-which encodes the directory that allows to install a proof library.
+Each location in the library tree is uniquely identified by a *libpath*.
 
 Every *libpath* conforms to the pattern `cat/stem/[flavour,]version` 
 where `stem`, `version` and `flavour` are defined in the
-[name specification](#proof-library-name-specification). The `cat` part
-refers to the first directory at the root of the library tree. The `flavour,`
-part is optional.
+[name specification](#proof-library-name-specification). The `cat` (for
+category) part refers to the first directory at the root of the library tree.
+The `flavour,` part is optional.
 
 Such a *libpath* allows to find the package under the library tree.
 
@@ -154,7 +153,7 @@ that makefiles are written using BSD make, Linux users may hence have to use
 For example, to download `arith_fermat-1.0-sttfa`,
 
 ``` sh
-cd arithmetic/arith_fermat/sttfa,1.0
+cd libraries/arith_fermat/sttfa,1.0
 make download
 ```
 
@@ -185,9 +184,6 @@ Upcoming
 
 - Add a maintainer for each library
 
-- Setup a central repository such that downloading proof package
-  `lib-0.1-enc.tgz` is as easy as `wget REPO/lib-0.1-enc.tgz`.
-  
 - Implement automated type checking of libraries (target `check` of
   `library.mk`), possibly by providing a script alongside the `Makefile`
   
