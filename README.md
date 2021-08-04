@@ -187,23 +187,6 @@ Upcoming
 
 - Add a maintainer for each library
 
-<<<<<<< HEAD
-- Implement automated type checking of libraries (target `check` of
-  `library.mk`), possibly by providing a script alongside the `Makefile`
-  
-- Add a tool to resolve dependencies and install recursively libraries needed.
-
-||||||| merged common ancestors
-- Setup a central repository such that downloading proof package
-  `lib-0.1-enc.tgz` is as easy as `wget REPO/lib-0.1-enc.tgz`.
-  
-- Implement automated type checking of libraries (target `check` of
-  `library.mk`), possibly by providing a script alongside the `Makefile`
-  
-- Add a tool to resolve dependencies and install recursively libraries needed.
-
-=======
->>>>>>> target_check
 - Use another format than Makefile to have easily parsable meta data. Or
   add target to generate json from makefile.
 
