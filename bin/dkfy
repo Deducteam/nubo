@@ -1,0 +1,10 @@
+#!/bin/sh
+
+# Add '.dk' as suffix to all strings given as argument
+
+dkfy_aux () {
+    for a in "$@"; do
+        printf '%s ' "${a}.dk"
+    done
+}
+dkfy_aux "$@" | xargs

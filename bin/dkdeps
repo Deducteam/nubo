@@ -1,0 +1,11 @@
+#!/bin/sh
+
+# Return the dependencies of the file provided as argument. If no file is
+# given, it exits with status 1. Otherwise the exit status is 0.
+# dkdeps foo.dk == bar baz frob
+# dkdeps foo.dk == <empty line> (if foo.dk does not have any dependency)
+
+if [ -z "$1" ]; then
+    return 1
+fi
+perl -lne '/(\w+)\.\w+/ && print "$1"' "$@" | sort | uniq | tr '\n' ' ' | xargs
