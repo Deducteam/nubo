@@ -41,6 +41,10 @@ makefiles) that define a set of variables.
   `<version>` is its version used. The format of the version may depend on the
   source of the tool. If the tool is stored on git, a commit hash, or tag, or
   branch name may be provided. Tools are referenced in `nubo/tools.md`.
+
+- `MAIN`: a list of entry points to the library. The entry points are
+  explicitly checked whereas other modules are usually checked because they are
+  dependencies.
   
 **Note:**
 These variables not only serve informative purposes, they can be used to fulfill

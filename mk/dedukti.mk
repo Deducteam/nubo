@@ -1,4 +1,6 @@
-all:
+.for tg in ${.TARGETS}
+${tg}: ${tg}.dko
+.endfor
 
 .SUFFIXES: .dk .dko
 

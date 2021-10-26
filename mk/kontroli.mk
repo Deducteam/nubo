@@ -1,11 +1,6 @@
-all:
-
-.SUFFIXES: .dk .dko
-
-.dk.dko:
-	${CHECK} ${FLAGS} `tstcdd $< | xargs dkfy`
-# Because Kontroli does not produce objects, we just copy the source
-	cp $< $@
+.for tg in ${.TARGETS}
+${tg}:
+	${MAKE} -f ${PREFIX}/mk/tc.mk ${tg}.dko | xargs ${CHECK} ${FLAGS}
+.endfor
 
 clean:
-	rm -rf *.dko

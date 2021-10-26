@@ -25,12 +25,15 @@ The makefile `library.mk` must be included *at the end* of the blueprints with
 
 - `download`: download the library.
 - `check`: download the library (if needed) and check it.
-- `package`: TODO
+- `package`: create a package that can be uploaded to the repository.
 - `install`: TODO
 
 `dedukti.mk`, `kontroli.mk`
 ---------------------------
 
-These two makefile define the inference rules to transform a `.dk` file into a
-`.dko` file, using either [Dedukti](https://github.com/Deducteam/dedukti) or
+These two makefiles are used by the `check` target of `library.mk`. Let `M` be
+any of the two makefiles and `T1 T2 ...` be module names to be compiled. Then
+`make -f M T1 T2 ...` must check the modules `T1 T2 ...` located in files
+`T1.dk T2.dk ...`. Each makefile ensure such a property for a given `CHECKER`,
+either [Dedukti](https://github.com/Deducteam/dedukti) or
 [Kontroli](https://github.com/01mf02/kontroli-rs).

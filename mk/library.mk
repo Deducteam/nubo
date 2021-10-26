@@ -11,6 +11,8 @@ LIB_DEPENDS ?=
 LIB_ORIGIN  ?=
 TOOLING     ?=
 ENCODING    ?=
+FLAGS		?=
+MAIN 		?=
 
 # Paths
 PREFIX   ?= /usr/local/share/nubo/
@@ -69,14 +71,14 @@ check: download
 	mkdir -p ${CACHE}/${_NAME}
 	ln -f ${.CURDIR}/${_NAME}/*.dk ${CACHE}/${_NAME}
 	ln -f ${.CURDIR}/${_NAME}/.depend ${CACHE}/${_NAME}
-.for dep in ${LIB_DEPENDS}
-	${MAKE} -C ${PREFIX}/${dep} check
-.endfor
+#.for dep in ${LIB_DEPENDS}
+#	${MAKE} -C ${PREFIX}/${dep} check
+#.endfor
 .for dep in ${_DEP_NAMES}
 	ln -f ${CACHE}/${dep}/*.dk ${CACHE}/${_NAME}
 .endfor
-	PATH=${BIN}:${PATH} ${MAKE} -C ${CACHE}/${_NAME} \
--f ${PREFIX}/mk/${CHECKER}.mk CHECK="${_CHECK}" all
+	${MAKE} -C ${CACHE}/${_NAME} \
+-f ${PREFIX}/mk/${CHECKER}.mk CHECK="${_CHECK}" ${MAIN}
 
 install:
 	# TODO
