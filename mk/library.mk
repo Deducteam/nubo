@@ -54,19 +54,31 @@ _DEP_NAMES += ${dep:C/[^\/]+\/([^\/]+)\/(.+)$/\1-\2/g}
 ### End of variable setup. Only targets now.
 ###
 
-download:
+# Library unpacked as a directory
+${_NAME}:
 	mkdir -p ${_NAME}
 	${FETCH_CMD} ${PKG_PATH}/${_NAME}.tgz | \
 	${TAR} xz -C ${_NAME}/
 
-check: download
+# Archive
+${_NAME}.tgz: ${_NAME}
+	(cd ${_NAME} || exit 1; \
+	${TAR} czf ${_NAME}.tgz *.dk .depend; \
+	mv ${_NAME}.tgz ..)
+
+# Cache the library ${_NAME}
+_cache: download
 	rm -rf ${CACHE}/${_NAME}
 	mkdir -p ${CACHE}/${_NAME}
 	ln -f ${.CURDIR}/${_NAME}/*.dk ${CACHE}/${_NAME}
 	ln -f ${.CURDIR}/${_NAME}/.depend ${CACHE}/${_NAME}
-#.for dep in ${LIB_DEPENDS}
-#	${MAKE} -C ${NUBOROOT}/${dep} check
-#.endfor
+
+download: ${_NAME}
+
+check: download _cache
+.for dep in ${LIB_DEPENDS}
+	${MAKE} -C ${NUBOROOT}/${dep} _cache
+.endfor
 .for dep in ${_DEP_NAMES}
 	ln -f ${CACHE}/${dep}/*.dk ${CACHE}/${_NAME}
 .endfor
@@ -76,7 +88,4 @@ check: download
 install:
 	# TODO
 
-package: download
-	(cd ${_NAME} || exit 1; \
-	${TAR} czf ${_NAME}.tgz *.dk .depend; \
-	mv ${_NAME}.tgz ..)
+package: ${_NAME}.tgz
