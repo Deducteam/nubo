@@ -45,6 +45,8 @@ makefiles) that define a set of variables.
 - `MAIN`: a list of entry points to the library. The entry points are
   explicitly checked whereas other modules are usually checked because they are
   dependencies.
+
+- `FLAGS`: flags that may be passed to the checker.
   
 **Note:**
 These variables not only serve informative purposes, they can be used to fulfill
