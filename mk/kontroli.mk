@@ -1,6 +1,6 @@
 .for tg in ${.TARGETS}
 ${tg}:
-	${MAKE} -f ${PREFIX}/mk/tc.mk ${tg}.dko | xargs ${CHECK} ${FLAGS}
+	${MAKE} -f ${NUBOROOT}/mk/tc.mk ${tg}.dko | xargs ${CHECK} ${FLAGS}
 .endfor
 
 clean:

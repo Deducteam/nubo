@@ -14,10 +14,10 @@ ENCODING    ?=
 MAIN 		?=
 
 # Paths
-PREFIX   ?= /usr/local/share/nubo/
+NUBOROOT ?= /usr/local/share/nubo/
 PKG_PATH ?= http://logipedia.inria.fr/nubo/
-CACHE    ?= ${PREFIX}/_cache
-BIN      ?= ${PREFIX}/bin
+CACHE    ?= ${NUBOROOT}/_cache
+BIN      ?= ${NUBOROOT}/bin
 
 # Binaries
 FETCH_CMD ?= curl
@@ -55,15 +55,9 @@ _DEP_NAMES += ${dep:C/[^\/]+\/([^\/]+)\/(.+)$/\1-\2/g}
 ###
 
 download:
-.if ${LIB_FLAVOUR}
-	mkdir -p ${LIB_NAME}-${LIB_VERSION}-${LIB_FLAVOUR}/
-	${FETCH_CMD} ${PKG_PATH}/${LIB_NAME}-${LIB_VERSION}-${LIB_FLAVOUR}.tgz | \
-${TAR} xz -C ${LIB_NAME}-${LIB_VERSION}-${LIB_FLAVOUR}/
-.else
-	mkdir -p ${LIB_NAME}-${LIB_VERSION}/
-	${FETCH_CMD} ${PKG_PATH}/${LIB_NAME}-${LIB_VERSION}.tgz | \
-${TAR} xz -C ${LIB_NAME}-${LIB_VERSION}/
-.endif
+	mkdir -p ${_NAME}
+	${FETCH_CMD} ${PKG_PATH}/${_NAME}.tgz | \
+	${TAR} xz -C ${_NAME}/
 
 check: download
 	rm -rf ${CACHE}/${_NAME}
@@ -71,18 +65,18 @@ check: download
 	ln -f ${.CURDIR}/${_NAME}/*.dk ${CACHE}/${_NAME}
 	ln -f ${.CURDIR}/${_NAME}/.depend ${CACHE}/${_NAME}
 #.for dep in ${LIB_DEPENDS}
-#	${MAKE} -C ${PREFIX}/${dep} check
+#	${MAKE} -C ${NUBOROOT}/${dep} check
 #.endfor
 .for dep in ${_DEP_NAMES}
 	ln -f ${CACHE}/${dep}/*.dk ${CACHE}/${_NAME}
 .endfor
 	${MAKE} -C ${CACHE}/${_NAME} \
--f ${PREFIX}/mk/${CHECKER}.mk CHECK="${_CHECK}" ${MAIN}
+-f ${NUBOROOT}/mk/${CHECKER}.mk CHECK="${_CHECK}" ${MAIN}
 
 install:
 	# TODO
 
 package: download
 	(cd ${_NAME} || exit 1; \
-		tar -czf ${_NAME}.tgz *.dk .depend; \
-		mv ${_NAME}.tgz ..)
+	${TAR} czf ${_NAME}.tgz *.dk .depend; \
+	mv ${_NAME}.tgz ..)

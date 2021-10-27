@@ -10,4 +10,4 @@ LIB_DEPENDS = encodings/sttfa/1.0
 ENCODING    = encodings/sttfa/1.0
 MAIN        = fermat
 
-.include "${PREFIX}/mk/library.mk"
+.include "${NUBOROOT}/mk/library.mk"
