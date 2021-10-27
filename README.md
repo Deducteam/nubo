@@ -165,9 +165,11 @@ How to use this repository
 The library tree can be used to install, check or package libraries using
 the `make` program, in its BSD variant (Linux users may have to use `bmake`).
 
-Currently, two commands are available,
+The available commands are
 - `download`: download and extracts the source files of the library,
 - `check`: downloads and checks the library.
+- `package`: create a library package for distribution
+- `lint`: performs sanity checks on a package
 
 These commands must be called in the same directory as the
 [blueprint](#blueprint-specification). For example, to download
