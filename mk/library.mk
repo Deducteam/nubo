@@ -11,7 +11,6 @@ LIB_DEPENDS ?=
 LIB_ORIGIN  ?=
 TOOLING     ?=
 ENCODING    ?=
-FLAGS		?=
 MAIN 		?=
 
 # Paths
@@ -83,5 +82,7 @@ check: download
 install:
 	# TODO
 
-package:
-	# TODO
+package: download
+	(cd ${_NAME} || exit 1; \
+		tar -czf ${_NAME}.tgz *.dk .depend; \
+		mv ${_NAME}.tgz ..)
