@@ -89,3 +89,7 @@ install:
 	# TODO
 
 package: ${_NAME}.tgz
+
+lint: ${_NAME}.tgz
+	@${NUBOROOT}/bin/lint.sh ${.ALLSRC}
+	@echo "${_NAME}.tgz OK"
