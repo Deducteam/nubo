@@ -1,8 +1,9 @@
 LIB_NAME    = u
 LIB_VERSION = 1.0
 LIB_FLAVOUR =
-LIB_MD5     =
-LIB_ORIGIN  = # TODO
-DK_VERSION  = # TODO
+LIB_MD5     = e145f7c4be22e3d3751ef5ce1f895c1c
+LIB_ORIGIN  =
+DK_VERSION  = 2
+MAIN        = theory_u
 
-.include "../../../mk/library.mk"
+.include "${NUBOROOT}/mk/library.mk"
