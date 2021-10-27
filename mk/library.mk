@@ -12,6 +12,7 @@ LIB_ORIGIN  ?=
 TOOLING     ?=
 ENCODING    ?=
 MAIN 		?=
+FLAGS       ?=
 
 # Paths
 NUBOROOT ?= /usr/local/share/nubo/
@@ -60,12 +61,6 @@ ${_NAME}:
 	${FETCH_CMD} ${PKG_PATH}/${_NAME}.tgz | \
 	${TAR} xz -C ${_NAME}/
 
-# Archive
-${_NAME}.tgz: ${_NAME}
-	(cd ${_NAME} || exit 1; \
-	${TAR} czf ${_NAME}.tgz *.dk .depend; \
-	mv ${_NAME}.tgz ..)
-
 # Cache the library ${_NAME}
 _cache: download
 	rm -rf ${CACHE}/${_NAME}
@@ -83,12 +78,15 @@ check: download _cache
 	ln -f ${CACHE}/${dep}/*.dk ${CACHE}/${_NAME}
 .endfor
 	${MAKE} -C ${CACHE}/${_NAME} \
--f ${NUBOROOT}/mk/${CHECKER}.mk CHECK="${_CHECK}" ${MAIN}
+-f ${NUBOROOT}/mk/${CHECKER}.mk CHECK="${_CHECK}" FLAGS="${FLAGS}" ${MAIN}
 
 install:
 	# TODO
 
-package: ${_NAME}.tgz
+package:
+	(cd ${_NAME} || exit 1; \
+	${TAR} czf ${_NAME}.tgz *.dk .depend; \
+	mv ${_NAME}.tgz ..)
 
 lint: ${_NAME}.tgz
 	@${NUBOROOT}/bin/lint.sh ${.ALLSRC}
