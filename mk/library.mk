@@ -21,7 +21,7 @@ CACHE    ?= ${NUBOROOT}/_cache
 BIN      ?= ${NUBOROOT}/bin
 
 # Binaries
-FETCH_CMD ?= curl
+FETCH_CMD ?= curl --silent
 TAR       ?= tar
 
 .if ${LIB_FLAVOUR}
@@ -33,13 +33,6 @@ _NAME =	${LIB_NAME}-${LIB_VERSION}
 # The checker is the name of the system used to typecheck files. When
 # checking files, a makefile ${CHECKER}.mk is looked for in the mk/ folder
 CHECKER ?= dedukti
-
-# Binary name for the checker
-.if "${CHECKER}" == dedukti
-_CHECK = dkcheck
-.elif "${CHECKER}" == kontroli
-_CHECK = kocheck
-.endif
 
 # Get the name of dependencies (from their path)
 _DEP_NAMES =
@@ -57,28 +50,32 @@ _DEP_NAMES += ${dep:C/[^\/]+\/([^\/]+)\/(.+)$/\1-\2/g}
 
 # Library unpacked as a directory
 ${_NAME}:
-	mkdir -p ${_NAME}
-	${FETCH_CMD} ${PKG_PATH}/${_NAME}.tgz | \
-	${TAR} xz -C ${_NAME}/
+	@mkdir -p ${_NAME}
+	@printf 'Downloading and unpacking... '
+	@${FETCH_CMD} ${PKG_PATH}/${_NAME}.tgz | \
+		${TAR} xz -C ${_NAME}/
+	@printf '\033[0;32mOK\033[0m\n'
 
 # Cache the library ${_NAME}
 _cache: download
-	rm -rf ${CACHE}/${_NAME}
-	mkdir -p ${CACHE}/${_NAME}
-	ln -f ${.CURDIR}/${_NAME}/*.dk ${CACHE}/${_NAME}
-	ln -f ${.CURDIR}/${_NAME}/.depend ${CACHE}/${_NAME}
+	@rm -rf ${CACHE}/${_NAME}
+	@mkdir -p ${CACHE}/${_NAME}
+	@ln -f ${.CURDIR}/${_NAME}/*.dk ${CACHE}/${_NAME}
+	@ln -f ${.CURDIR}/${_NAME}/.depend ${CACHE}/${_NAME}
 
 download: ${_NAME}
 
 check: download _cache
 .for dep in ${LIB_DEPENDS}
-	${MAKE} -C ${NUBOROOT}/${dep} _cache
+	@${MAKE} -C ${NUBOROOT}/${dep} _cache
 .endfor
 .for dep in ${_DEP_NAMES}
-	ln -f ${CACHE}/${dep}/*.dk ${CACHE}/${_NAME}
+	@ln -f ${CACHE}/${dep}/*.dk ${CACHE}/${_NAME}
 .endfor
-	${MAKE} -C ${CACHE}/${_NAME} \
--f ${NUBOROOT}/mk/${CHECKER}.mk CHECK="${_CHECK}" FLAGS="${FLAGS}" ${MAIN}
+	@printf 'Checking... '
+	@${MAKE} -s -C ${CACHE}/${_NAME} \
+-f ${NUBOROOT}/mk/${CHECKER}.mk FLAGS="${FLAGS}" ${MAIN}
+	@printf '\033[0;32mOK\033[0m\n'
 
 install:
 	# TODO
@@ -89,8 +86,8 @@ package:
 	mv ${_NAME}.tgz ..)
 
 lint: ${_NAME}.tgz
-	@${NUBOROOT}/bin/lint.sh ${.ALLSRC}
-	@echo "${_NAME}.tgz OK"
+	${NUBOROOT}/bin/lint.sh ${.ALLSRC}
+	echo "${_NAME}.tgz OK"
 
 clean:
-	rm -r ${_NAME}
+	rm -rf ${_NAME} ${CACHE}/${_NAME}
