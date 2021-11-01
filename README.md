@@ -102,20 +102,21 @@ For instance, `arithmetic/arith_fermat/sttfa,1.0` is the location of the library
 
 As an example, the overall structure of the library tree may look like this,
 ```
-|- encodings
-   |- libA
-      |- 1.0
-         |- Makefile
-      |- flavA,1.0
-         |- Makefile
-      |- flavA,1.1
-         |- Makefile
-      |- flavB,1.0
-         |- Makefile
-   |- libB
-      |- ...
-|- arithmetic
-   |- ...
+nubo/
++- encodings/
+|  +- libA/
+|  |  +- 1.0/
+|  |  |  +- Makefile
+|  |  +- flavA,1.0/
+|  |  |  +- Makefile
+|  |  +- flavA,1.1/
+|  |  |  +- Makefile
+|  |  +- flavB,1.0/
+|  |     +- Makefile
+|  +- libB/
+|     +- ...
++- arithmetic/
+   +- ...
 ```
 
 **Note:** in the previous example, each `Makefile` is a
