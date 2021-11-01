@@ -51,3 +51,8 @@ Assuming we have a list of files `f1.dk f2.dk ...` and a (valid) `.depend`
 file, calling `make -f ${NUBOROOT}/mk/tc.mk fk.dko` prints the dependencies of
 `fk.dko`
 to the standard output.
+
+`isabelle.mk`
+-------------
+
+Provides recipes to generate Dedukti file from Isabelle standard library.
