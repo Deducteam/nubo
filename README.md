@@ -31,10 +31,9 @@ makefiles) that define a set of variables.
   specifies the encoding into which proofs are stated. It must be a (possibly
   empty) subset of `LIB_DEPENDS`. This field is meant to be used for
   interoperability purposes.
-
-- `DK_VERSION`: a string of the form `version:git_id`, where `version` is `2`
-  or `3` that indicate whether proofs can be proof checked with Dedukti2.X or
-  Dedukti3, and `git_id` is either a commit hash, a branch name or a tag.
+  
+- `SYNTAX`: syntax the source files of the library are written in. See the
+  [syntax specification](#syntax-specification).
 
 - `TOOLING`: a list of tools used to translate proofs. A tool is specified by
   a string `<name>:<version>` where `<name>` is the name of the tool, and
@@ -121,6 +120,31 @@ nubo/
 
 **Note:** in the previous example, each `Makefile` is a
 [*blueprint*](#blueprint-specification).
+
+Syntax specification
+--------------------
+
+The source files of a library are written in a concrete syntax that can be
+identified by a syntax specification which conforms to the pattern
+```
+stem [options]
+```
+
+The _stem_ part is a string without spaces that identifies a grammar that can be
+used to develop libraries.
+
+The _options_ part is a (possibly empty) space-separated list of strings
+preceded by a dash or a plus sign. An option identifies one or more syntax
+extensions that are added to the grammar _stem_ if the option is preceded by `+`
+and removed from the grammar if the option is preceded by `-`.
+
+The possible stems and options are referenced in the file `SYNTAXES`. The
+`SYNTAXES` file follows the [record jar][1] format where records contain the
+following fields:
+- `type`: either `stem` or `option`,
+- `key`: the string that may be used in the syntax specifier,
+- `description`: a short description of the grammar or the syntax extension
+  introduced by the record.
 
 Tooling specification
 ---------------------

@@ -4,7 +4,7 @@ LIB_MD5 = 019fe34fbd432adbd01b5d26bb84519f
 LIB_DEPENDS =
 LIB_ORIGIN = https://isabelle.in.tum.de/
 ENCODING =
-DK_VERSION = 2
+SYNTAX = dk
 MAIN = Dedukti_Import
 FLAGS = --eta
 
