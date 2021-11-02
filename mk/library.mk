@@ -23,6 +23,8 @@ BIN      ?= ${NUBOROOT}/bin
 # Binaries
 FETCH_CMD ?= curl --silent
 TAR       ?= tar
+MD5       ?= md5sum --quiet
+# With BSD, use md5 -rq
 
 .if ${LIB_FLAVOUR}
 _NAME =	${LIB_NAME}-${LIB_VERSION}-${LIB_FLAVOUR}
@@ -50,10 +52,13 @@ _DEP_NAMES += ${dep:C/[^\/]+\/([^\/]+)\/(.+)$/\1-\2/g}
 
 # Library unpacked as a directory
 ${_NAME}:
-	@mkdir -p ${_NAME}
 	@printf 'Downloading and unpacking... '
-	@${FETCH_CMD} ${PKG_PATH}/${_NAME}.tgz | \
-		${TAR} xz -C ${_NAME}/
+	@${FETCH_CMD} ${PKG_PATH}/${_NAME}.tgz > ${_NAME}.tgz
+	@mkdir -p ${_NAME}
+	@(cd ${_NAME} && ${TAR} xzf ../${_NAME}.tgz)
+	# NOTE: tar xzf is not POSIX, only tar xf is
+	# Checking md5sum with cksum(1) style checksum
+	@echo "${LIB_MD5} ${_NAME}.tgz" | ${MD5} -c -
 	@printf '\033[0;32mOK\033[0m\n'
 
 # Cache the library ${_NAME}
@@ -93,4 +98,4 @@ lint: ${_NAME}.tgz
 	echo "${_NAME}.tgz OK"
 
 clean:
-	rm -rf ${_NAME} ${CACHE}/${_NAME}
+	rm -rf ${_NAME} ${CACHE}/${_NAME} ${_NAME}.tgz
