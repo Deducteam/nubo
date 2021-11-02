@@ -71,6 +71,9 @@ check: download _cache
 .endfor
 .for dep in ${_DEP_NAMES}
 	@ln -f ${CACHE}/${dep}/*.dk ${CACHE}/${_NAME}
+	# Import .depend file of the dependency to check it correctly
+	@ln -f ${CACHE}/${dep}/.depend ${CACHE}/${_NAME}/${dep}.mk
+	@echo '.include "${dep}.mk"' >> ${CACHE}/${_NAME}/.depend
 .endfor
 	@printf 'Checking... '
 	@${MAKE} -s -C ${CACHE}/${_NAME} \
