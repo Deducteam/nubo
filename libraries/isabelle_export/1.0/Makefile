@@ -8,4 +8,4 @@ SYNTAX = dk
 MAIN = Isabelle_Export
 FLAGS = --eta
 
-.include "${NUBOROOT}/mk/library.mk"
+.include "${NUBOROOT}/infrastructure/mk/library.mk"

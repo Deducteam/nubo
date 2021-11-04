@@ -27,4 +27,4 @@ MAIN        = SEQ004_size5 \
 	      SEQ050_size2 \
 	      SEQ050_size3 
 
-.include "${NUBOROOT}/mk/library.mk"
+.include "${NUBOROOT}/infrastructure/mk/library.mk"

@@ -18,19 +18,22 @@ FLAGS       ?=
 NUBOROOT ?= /usr/local/share/nubo/
 PKG_PATH ?= http://logipedia.inria.fr/nubo/
 CACHE    ?= ${NUBOROOT}/_cache
-BIN      ?= ${NUBOROOT}/bin
 
 # Binaries
 FETCH_CMD ?= curl --silent
 TAR       ?= tar
 MD5       ?= md5sum --quiet
-# With BSD, use md5 -rq
+# For BSD:
+#MD5       ?= md5 -rq
 
 .if ${LIB_FLAVOUR}
 _NAME =	${LIB_NAME}-${LIB_VERSION}-${LIB_FLAVOUR}
 .else
 _NAME =	${LIB_NAME}-${LIB_VERSION}
 .endif
+
+_MK  = ${NUBOROOT}/infrastructure/mk
+_BIN = ${NUBOROOT}/infrastructure/bin
 
 # The checker is the name of the system used to typecheck files. When
 # checking files, a makefile ${CHECKER}.mk is looked for in the mk/ folder
@@ -81,8 +84,8 @@ check: download _cache
 	@echo '.include "${dep}.mk"' >> ${CACHE}/${_NAME}/.depend
 .endfor
 	@printf 'Checking... '
-	@${MAKE} -s -C ${CACHE}/${_NAME} \
--f ${NUBOROOT}/mk/${CHECKER}.mk FLAGS="${FLAGS}" ${MAIN}
+	@${MAKE} -s -C ${CACHE}/${_NAME} -f ${_MK}/${CHECKER}.mk \
+		FLAGS="${FLAGS}" ${MAIN}
 	@printf '\033[0;32mOK\033[0m\n'
 
 install:

@@ -6,4 +6,4 @@ LIB_ORIGIN  = http://www.lsv.fr/~grienenberger/hollight_stdlib_theory_u.tgz
 LIB_DEPENDS = encodings/u/1.0
 SYNTAX      = dk
 
-.include "../../../mk/library.mk"
+.include "${NUBOROOT}/infrastructure/mk/library.mk"

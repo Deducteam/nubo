@@ -8,4 +8,4 @@ LIB_DEPENDS =
 ENCODING    =
 MAIN        = main # TODO: many files are not typechecked
 
-.include "${NUBOROOT}/mk/library.mk"
+.include "${NUBOROOT}/infrastructure/mk/library.mk"

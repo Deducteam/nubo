@@ -6,4 +6,4 @@ LIB_ORIGIN  =
 SYNTAX      = dk
 MAIN        = theory_u
 
-.include "${NUBOROOT}/mk/library.mk"
+.include "${NUBOROOT}/infrastructure/mk/library.mk"

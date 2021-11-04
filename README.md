@@ -39,7 +39,7 @@ makefiles) that define a set of variables.
   a string `<name>:<version>` where `<name>` is the name of the tool, and
   `<version>` is its version used. The format of the version may depend on the
   source of the tool. If the tool is stored on git, a commit hash, or tag, or
-  branch name may be provided. Tools are referenced in `nubo/tools.md`.
+  branch name may be provided. Tools are referenced in `TOOLS`.
 
 - `MAIN`: a list of entry points to the library. The entry points are
   explicitly checked whereas other modules are usually checked because they are
@@ -49,8 +49,8 @@ makefiles) that define a set of variables.
   
 **Note:**
 These variables not only serve informative purposes, they can be used to fulfill
-miscellaneous tasks using targets defined in `mk/library.mk`. More information
-on these targets are given in
+miscellaneous tasks using targets defined in `infrastructure/mk/library.mk`.
+More information on these targets are given in
 [How to use this repository](#how-to-use-this-repository).
   
 Proof library name specification
@@ -157,7 +157,6 @@ A record must at least contain the fields `name` and `homepage`. Any other field
 is optional.
 
 - `name`: a unique name that identifies the tool.
-
 - `homepage`: URL of the homepage of the tool from where it can be downloaded.
 
 Packaged libraries
@@ -207,7 +206,7 @@ cd libraries/arith_fermat/sttfa,1.0
 make download
 ```
 
-More documentation on the targets is available in `mk/README.md`.
+More documentation on the targets is available in `infrastructure/mk/README.md`.
 
 Notes
 -----

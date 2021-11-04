@@ -1,4 +1,4 @@
 library:
-	@bin/addlib.pl
+	@infrastructure/bin/addlib.pl
 
 .PHONY: library

@@ -8,4 +8,4 @@ TOOLING     = hollight2dk holide dkmeta # TODO
 LIB_DEPENDS = encodings/sttfa/1.0 encodings/stte_hole_axioms/sttfa,1.0
 ENCODING    = encodings/sttfa/1.0
 
-.include "../../../mk/library.mk"
+.include "${NUBOROOT}/infrastructure/mk/library.mk"
