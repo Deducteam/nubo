@@ -191,11 +191,18 @@ How to use this repository
 The library tree can be used to install, check or package libraries using
 the `make` program, in its BSD variant (Linux users may have to use `bmake`).
 
-The available commands are
-- `download`: download and extracts the source files of the library,
-- `check`: downloads and checks the library.
-- `package`: create a library package for distribution
-- `lint`: performs sanity checks on a package
+The available targets are
+- *download*: download and extracts the source files of the library,
+- *check*: check the library. By defaults it uses Dedukti to check the library.
+  It can be invoked as `make check=CHECKER` where `CHECKER` is the name of a
+  known checker. Currently available are `dedukti` and `kontroli`.
+- *package*: create a library package from the fetched files. 
+- *lint*: performs sanity checks on a package.
+- *clean*: clean content. By default, clean the blueprint directory. It can be
+  invoked as `make clean='[work build]'.
+  - _work_: clean the blueprint directory (remove archives and uncompressed
+    library).
+  - _build_: clean typechecked files.
 
 These commands must be called in the same directory as the
 [blueprint](#blueprint-specification). For example, to download
@@ -207,6 +214,11 @@ make download
 ```
 
 More documentation on the targets is available in `infrastructure/mk/README.md`.
+
+Contributing to Nubo
+--------------------
+
+Upcoming
 
 Notes
 -----

@@ -25,6 +25,8 @@ TAR       ?= tar
 MD5       ?= md5sum --quiet
 # For BSD:
 #MD5       ?= md5 -rq
+# or, if coreutils are installed
+#MD5       ?= gmd5sum --quiet
 
 .if ${LIB_FLAVOUR}
 _NAME =	${LIB_NAME}-${LIB_VERSION}-${LIB_FLAVOUR}
@@ -33,11 +35,13 @@ _NAME =	${LIB_NAME}-${LIB_VERSION}
 .endif
 
 _MK  = ${NUBOROOT}/infrastructure/mk
-_BIN = ${NUBOROOT}/infrastructure/bin
 
-# The checker is the name of the system used to typecheck files. When
-# checking files, a makefile ${CHECKER}.mk is looked for in the mk/ folder
-CHECKER ?= dedukti
+# Variables as targets.
+# The following variables may be used as targets with 'make var=val'. Launching
+# the appropriate rule is done with the _dispatch target.
+
+_check = ${check:Udedukti}
+_clean = ${clean:Uall}
 
 # Get the name of dependencies (from their path)
 _DEP_NAMES =
@@ -52,6 +56,22 @@ _DEP_NAMES += ${dep:C/[^\/]+\/([^\/]+)\/(.+)$/\1-\2/g}
 ###
 ### End of variable setup. Only targets now.
 ###
+
+# Launch the right target when invoking make var=val.
+.MAIN: _dispatch
+_dispatch:
+
+.if defined(check)
+_dispatch: _internal-check
+.else
+check: _internal-check
+.endif
+
+.if defined(clean)
+_dispatch: _internal-clean
+.else
+clean: _internal-clean
+.endif
 
 # Library unpacked as a directory
 ${_NAME}:
@@ -71,9 +91,7 @@ _cache: download
 	@ln -f ${.CURDIR}/${_NAME}/*.dk ${CACHE}/${_NAME}
 	@ln -f ${.CURDIR}/${_NAME}/.depend ${CACHE}/${_NAME}
 
-download: ${_NAME}
-
-check: download _cache
+_internal-check: download _cache
 .for dep in ${LIB_DEPENDS}
 	@${MAKE} -C ${NUBOROOT}/${dep} _cache
 .endfor
@@ -84,14 +102,24 @@ check: download _cache
 	@echo '.include "${dep}.mk"' >> ${CACHE}/${_NAME}/.depend
 .endfor
 	@printf 'Checking... '
-	@${MAKE} -s -C ${CACHE}/${_NAME} -f ${_MK}/${CHECKER}.mk \
+	@${MAKE} -s -C ${CACHE}/${_NAME} -f ${_MK}/${_check}.mk \
 		FLAGS="${FLAGS}" ${MAIN}
 	@printf '\033[0;32mOK\033[0m\n'
+
+_internal-clean:
+.if ${_clean:Mwork}
+	@rm -rf ${_NAME} ${_NAME}.tgz
+.endif
+.if ${_clean:Mbuild}
+	@rm -rf ${CACHE}/${_NAME}
+.endif
+
+download: ${_NAME}
 
 install:
 	# TODO
 
-package:
+package: ${_NAME}
 	(cd ${_NAME} || exit 1; \
 	${TAR} czf ${_NAME}.tgz *.dk .depend; \
 	mv ${_NAME}.tgz ..)
@@ -102,3 +130,6 @@ lint: ${_NAME}.tgz
 
 clean:
 	rm -rf ${_NAME} ${CACHE}/${_NAME} ${_NAME}.tgz
+
+.PHONY: _internal-check _internal-clean check clean lint package install \
+download _cache _dispatch
