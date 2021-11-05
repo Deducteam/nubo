@@ -8,4 +8,4 @@ SYNTAX = dk
 MAIN = Dedukti_Import
 FLAGS = --eta
 
-.include "${NUBOROOT}/infrastructure/mk/library.mk"
+.include "${NUBOROOT}/infrastructure/mk/nubo.library.mk"

@@ -3390,4 +3390,4 @@ MAIN        = AGT003p1_prf \
 	      TOP028p1_prf \
 	      TOP034p1_prf \
 
-.include "${NUBOROOT}/infrastructure/mk/library.mk"
+.include "${NUBOROOT}/infrastructure/mk/nubo.library.mk"

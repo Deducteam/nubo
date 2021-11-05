@@ -72,7 +72,7 @@ LIB_DEPENDS = # TODO
 ENCODING    = # TODO
 MAIN        = # TODO
 
-.include \"\${NUBOROOT}\"/mk/library.mk
+.include \"\${NUBOROOT}\"/mk/nubo.library.mk
 EOT
 close $fh;
 

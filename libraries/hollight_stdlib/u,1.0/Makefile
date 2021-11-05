@@ -9,4 +9,4 @@ LIB_DEPENDS = encodings/u/1.0 encodings/stte/u,1.0 \
               encodings/stte_hole_axioms/u,1.0
 ENCODING    = encodings/u/1.0
 
-.include "${NUBOROOT}/infrastructure/mk/library.mk"
+.include "${NUBOROOT}/infrastructure/mk/nubo.library.mk"

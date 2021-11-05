@@ -1,6 +1,8 @@
 #-*- mode: Makefile; tab-width: 4; -*-
 # ex:ts=4 sw=4 filetype=make:
 
+.include "nubo.common.mk"
+
 # Targets and meta data specifications, defined by each library
 LIB_NAME    ?=
 LIB_VERSION ?=
@@ -37,11 +39,8 @@ _NAME =	${LIB_NAME}-${LIB_VERSION}
 _MK  = ${NUBOROOT}/infrastructure/mk
 
 # Variables as targets.
-# The following variables may be used as targets with 'make var=val'. Launching
-# the appropriate rule is done with the _dispatch target.
 
 _check = ${check:Udedukti}
-_clean = ${clean:Uall}
 
 # Get the name of dependencies (from their path)
 _DEP_NAMES =
@@ -56,22 +55,6 @@ _DEP_NAMES += ${dep:C/[^\/]+\/([^\/]+)\/(.+)$/\1-\2/g}
 ###
 ### End of variable setup. Only targets now.
 ###
-
-# Launch the right target when invoking make var=val.
-.MAIN: _dispatch
-_dispatch:
-
-.if defined(check)
-_dispatch: _internal-check
-.else
-check: _internal-check
-.endif
-
-.if defined(clean)
-_dispatch: _internal-clean
-.else
-clean: _internal-clean
-.endif
 
 # Library unpacked as a directory
 ${_NAME}:
@@ -107,10 +90,10 @@ _internal-check: download _cache
 	@printf '\033[0;32mOK\033[0m\n'
 
 _internal-clean:
-.if ${_clean:Mwork}
+.if ${_clean:Mwork} || ${_clean:Mall}
 	@rm -rf ${_NAME} ${_NAME}.tgz
 .endif
-.if ${_clean:Mbuild}
+.if ${_clean:Mbuild} || ${_clean:Mall}
 	@rm -rf ${CACHE}/${_NAME}
 .endif
 
@@ -128,8 +111,9 @@ lint: ${_NAME}.tgz
 	${NUBOROOT}/bin/lint.sh ${.ALLSRC}
 	echo "${_NAME}.tgz OK"
 
-clean:
-	rm -rf ${_NAME} ${CACHE}/${_NAME} ${_NAME}.tgz
+clean: _internal-clean
+
+check: _internal-check
 
 .PHONY: _internal-check _internal-clean check clean lint package install \
 download _cache _dispatch

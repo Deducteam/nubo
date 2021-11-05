@@ -6,4 +6,4 @@ LIB_ORIGIN  = # TODO
 SYNTAX      = dk +cmds
 MAIN        = focal
 
-.include "${NUBOROOT}/infrastructure/mk/library.mk"
+.include "${NUBOROOT}/infrastructure/mk/nubo.library.mk"

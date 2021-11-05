@@ -6,4 +6,4 @@ LIB_ORIGIN  = https://github.com/Deducteam/Logipedia/tree/master/interoperabilit
 LIB_DEPENDS = encodings/sttfa/1.0
 SYNTAX      = dk
 
-.include "${NUBOROOT}/infrastructure/mk/library.mk"
+.include "${NUBOROOT}/infrastructure/mk/nubo.library.mk"
