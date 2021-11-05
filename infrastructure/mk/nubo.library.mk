@@ -1,6 +1,9 @@
 #-*- mode: Makefile; tab-width: 4; -*-
 # ex:ts=4 sw=4 filetype=make:
 
+# Variables that start with an underscore are not part of the API and may change
+# without notice.
+
 .include "nubo.common.mk"
 
 # Targets and meta data specifications, defined by each library
@@ -21,8 +24,14 @@ NUBOROOT ?= /usr/local/share/nubo/
 PKG_PATH ?= http://logipedia.inria.fr/nubo/
 CACHE    ?= ${NUBOROOT}/_cache
 
+PROGRESS_METER ?= Yes
+
 # Binaries
+.if ${PROGRESS_METER:L} == 'yes'
+FETCH_CMD ?= curl --progress-bar
+.else
 FETCH_CMD ?= curl --silent
+.endif
 TAR       ?= tar
 MD5       ?= md5sum --quiet
 # For BSD:
@@ -36,11 +45,28 @@ _NAME =	${LIB_NAME}-${LIB_VERSION}-${LIB_FLAVOUR}
 _NAME =	${LIB_NAME}-${LIB_VERSION}
 .endif
 
-_MK  = ${NUBOROOT}/infrastructure/mk
+_MK = ${NUBOROOT}/infrastructure/mk
+# Used to display messages. Override to turn off display
+ECHO_MSG ?= echo
 
 # Variables as targets.
 
 _check = ${check:Udedukti}
+_known_checkers = kontroli dedukti
+.if !${_known_checkers:M${_check}}
+ERRORS += "Fatal: unknown checker: ${_check}.\n(not in ${_known_checkers})"
+.endif
+
+_clean_cmds = all build work
+.for _w in ${_clean}
+.  if !${_clean_cmds:M${_clean}}
+ERRORS += "Fatal: unknown clean command ${_w}\n(not in ${_clean_cmds})"
+.  endif
+.endfor
+
+.if !empty(LIB_FLAVOUR:M[0-9]*)
+ERRORS += "Fatal: flavour should never start with a digit"
+.endif
 
 # Get the name of dependencies (from their path)
 _DEP_NAMES =
@@ -58,14 +84,15 @@ _DEP_NAMES += ${dep:C/[^\/]+\/([^\/]+)\/(.+)$/\1-\2/g}
 
 # Library unpacked as a directory
 ${_NAME}:
-	@printf 'Downloading and unpacking... '
+	@${ECHO_MSG} "===> Downloading"
 	@${FETCH_CMD} ${PKG_PATH}/${_NAME}.tgz > ${_NAME}.tgz
 	@mkdir -p ${_NAME}
+	@${ECHO_MSG} "===> Unpacking"
 	@(cd ${_NAME} && ${TAR} xzf ../${_NAME}.tgz)
 	# NOTE: tar xzf is not POSIX, only tar xf is
 	# Checking md5sum with cksum(1) style checksum
 	@echo "${LIB_MD5} ${_NAME}.tgz" | ${MD5} -c -
-	@printf '\033[0;32mOK\033[0m\n'
+	@${ECHO_MSG} '\033[0;32mOK\033[0m'
 
 # Cache the library ${_NAME}
 _cache: download
@@ -84,10 +111,10 @@ _internal-check: download _cache
 	@ln -f ${CACHE}/${dep}/.depend ${CACHE}/${_NAME}/${dep}.mk
 	@echo '.include "${dep}.mk"' >> ${CACHE}/${_NAME}/.depend
 .endfor
-	@printf 'Checking... '
+	@${ECHO_MSG} '===> Proof checking'
 	@${MAKE} -s -C ${CACHE}/${_NAME} -f ${_MK}/${_check}.mk \
 		FLAGS="${FLAGS}" ${MAIN}
-	@printf '\033[0;32mOK\033[0m\n'
+	@${ECHO_MSG} '\033[0;32mOK\033[0m'
 
 _internal-clean:
 .if ${_clean:Mwork} || ${_clean:Mall}
@@ -108,12 +135,23 @@ package: ${_NAME}
 	mv ${_NAME}.tgz ..)
 
 lint: ${_NAME}.tgz
-	${NUBOROOT}/bin/lint.sh ${.ALLSRC}
-	echo "${_NAME}.tgz OK"
+	@${ECHO_MSG} "===> Linting ${_NAME}.tgz"
+	@${NUBOROOT}/bin/lint.sh ${.ALLSRC}
+	@${ECHO_MSG} '\033[0;32mOK\033[0m'
 
 clean: _internal-clean
 
 check: _internal-check
+
+.if defined(ERRORS)
+.BEGIN:
+.  for _m in ${ERRORS}
+	@echo 1>&2 ${_m} "(in ${_NAME})"
+.  endfor
+.  if !empty(ERRORS:M"Fatal\:*") || !empty(ERRORS:M'Fatal\:*')
+	@false # Exits with error 1. exit does not work
+.  endif
+.endif
 
 .PHONY: _internal-check _internal-clean check clean lint package install \
 download _cache _dispatch
