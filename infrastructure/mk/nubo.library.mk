@@ -136,7 +136,7 @@ package: ${_NAME}
 
 lint: ${_NAME}.tgz
 	@${ECHO_MSG} "===> Linting ${_NAME}.tgz"
-	@${NUBOROOT}/bin/lint.sh ${.ALLSRC}
+	@${_PERLSCRIPT}/lint.pl ${.ALLSRC}
 	@${ECHO_MSG} '\033[0;32mOK\033[0m'
 
 makesum: ${_NAME}.tgz
