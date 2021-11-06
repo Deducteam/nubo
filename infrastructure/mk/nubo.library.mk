@@ -33,11 +33,11 @@ FETCH_CMD ?= curl --progress-bar
 FETCH_CMD ?= curl --silent
 .endif
 TAR       ?= tar
-MD5       ?= md5sum --quiet
+MD5       ?= md5sum
 # For BSD:
 #MD5       ?= md5 -rq
 # or, if coreutils are installed
-#MD5       ?= gmd5sum --quiet
+#MD5       ?= gmd5sum
 
 .if ${LIB_FLAVOUR}
 _NAME =	${LIB_NAME}-${LIB_VERSION}-${LIB_FLAVOUR}
@@ -91,7 +91,7 @@ ${_NAME}:
 	@(cd ${_NAME} && ${TAR} xzf ../${_NAME}.tgz)
 	# NOTE: tar xzf is not POSIX, only tar xf is
 	# Checking md5sum with cksum(1) style checksum
-	@echo "${LIB_MD5} ${_NAME}.tgz" | ${MD5} -c -
+	@echo "${LIB_MD5} ${_NAME}.tgz" | ${MD5} --quiet -c -
 	@${ECHO_MSG} '\033[0;32mOK\033[0m'
 
 # Cache the library ${_NAME}
@@ -139,6 +139,9 @@ lint: ${_NAME}.tgz
 	@${NUBOROOT}/bin/lint.sh ${.ALLSRC}
 	@${ECHO_MSG} '\033[0;32mOK\033[0m'
 
+makesum: ${_NAME}.tgz
+	${_PERLSCRIPT}/makesum.pl ${.ALLSRC}
+
 clean: _internal-clean
 
 check: _internal-check
@@ -154,4 +157,4 @@ check: _internal-check
 .endif
 
 .PHONY: _internal-check _internal-clean check clean lint package install \
-download _cache _dispatch
+download _cache _dispatch makesum

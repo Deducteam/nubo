@@ -198,6 +198,8 @@ The available targets are
   known checker. Currently available are `dedukti` and `kontroli`.
 - *package*: create a library package from the fetched files. 
 - *lint*: performs sanity checks on a package.
+- *makesum*: computes the checksum of the library package and replace it in the
+  blueprint.
 - *clean*: clean content. By default, clean the blueprint directory. It can be
   invoked as `make clean='[work build]'.
   - _work_: clean the blueprint directory (remove archives and uncompressed
