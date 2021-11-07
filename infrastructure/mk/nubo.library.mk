@@ -68,15 +68,7 @@ ERRORS += "Fatal: unknown clean command ${_w}\n(not in ${_clean_cmds})"
 ERRORS += "Fatal: flavour should never start with a digit"
 .endif
 
-# Get the name of dependencies (from their path)
-_DEP_NAMES =
-.for dep in ${LIB_DEPENDS}
-.  if ${dep:M*/*/*,*} # Does the libpath contain a flavour?
-_DEP_NAMES += ${dep:C/[^\/]+\/([^\/]+)\/([^,]+),(.+)$\)/\1-\3-\2/g}
-.  else
-_DEP_NAMES += ${dep:C/[^\/]+\/([^\/]+)\/(.+)$/\1-\2/g}
-.  endif
-.endfor
+_LIBPTH != ${_PERLSCRIPT}/getlibpath.pl ${.CURDIR}
 
 ###
 ### End of variable setup. Only targets now.
@@ -96,23 +88,21 @@ ${_NAME}:
 
 # Cache the library ${_NAME}
 _cache: download
-	@rm -rf ${CACHE}/${_NAME}
-	@mkdir -p ${CACHE}/${_NAME}
-	@ln -f ${.CURDIR}/${_NAME}/*.dk ${CACHE}/${_NAME}
-	@ln -f ${.CURDIR}/${_NAME}/.depend ${CACHE}/${_NAME}
+	@rm -rf ${CACHE}/${_LIBPTH}
+	@mkdir -p ${CACHE}/${_LIBPTH}
+	@ln -f ${.CURDIR}/${_NAME}/*.dk ${CACHE}/${_LIBPTH}
+	@cp -f ${.CURDIR}/${_NAME}/.depend ${CACHE}/${_LIBPTH}
 
 _internal-check: download _cache
 .for dep in ${LIB_DEPENDS}
 	@${MAKE} -C ${NUBOROOT}/${dep} _cache
-.endfor
-.for dep in ${_DEP_NAMES}
-	@ln -f ${CACHE}/${dep}/*.dk ${CACHE}/${_NAME}
+	@ln -f ${CACHE}/${dep}/*.dk ${CACHE}/${_LIBPTH}
 	# Import .depend file of the dependency to check it correctly
-	@ln -f ${CACHE}/${dep}/.depend ${CACHE}/${_NAME}/${dep}.mk
-	@echo '.include "${dep}.mk"' >> ${CACHE}/${_NAME}/.depend
+	@cp -f ${CACHE}/${dep}/.depend ${CACHE}/${_LIBPTH}/${dep:S/\//_/g}.mk
+	@echo '.include "${dep:S/\//_/g}.mk"' >> ${CACHE}/${_LIBPTH}/.depend
 .endfor
 	@${ECHO_MSG} '===> Proof checking'
-	@${MAKE} -s -C ${CACHE}/${_NAME} -f ${_MK}/${_check}.mk \
+	@${MAKE} -C ${CACHE}/${_LIBPTH} -f ${_MK}/${_check}.mk \
 		FLAGS="${FLAGS}" ${MAIN}
 	@${ECHO_MSG} '\033[0;32mOK\033[0m'
 
@@ -121,7 +111,7 @@ _internal-clean:
 	@rm -rf ${_NAME} ${_NAME}.tgz
 .endif
 .if ${_clean:Mbuild} || ${_clean:Mall}
-	@rm -rf ${CACHE}/${_NAME}
+	@rm -rf ${CACHE}/${_LIBPTH}
 .endif
 
 download: ${_NAME}
