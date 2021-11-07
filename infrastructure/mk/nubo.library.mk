@@ -75,15 +75,19 @@ _LIBPTH != ${_PERLSCRIPT}/getlibpath.pl ${.CURDIR}
 ###
 
 # Library unpacked as a directory
-${_NAME}:
+.PRECIOUS: ${_NAME}.tgz
+${_NAME}.tgz:
 	@${ECHO_MSG} "===> Downloading"
 	@${FETCH_CMD} ${PKG_PATH}/${_NAME}.tgz > ${_NAME}.tgz
+	# Checking md5sum with cksum(1) style checksum
+	@echo "${LIB_MD5} ${_NAME}.tgz" | ${MD5} --quiet -c -
+	@${ECHO_MSG} '\033[0;32mOK\033[0m'
+
+${_NAME}: ${_NAME}.tgz
 	@mkdir -p ${_NAME}
 	@${ECHO_MSG} "===> Unpacking"
 	@(cd ${_NAME} && ${TAR} xzf ../${_NAME}.tgz)
 	# NOTE: tar xzf is not POSIX, only tar xf is
-	# Checking md5sum with cksum(1) style checksum
-	@echo "${LIB_MD5} ${_NAME}.tgz" | ${MD5} --quiet -c -
 	@${ECHO_MSG} '\033[0;32mOK\033[0m'
 
 # Cache the library ${_NAME}
@@ -97,9 +101,7 @@ _internal-check: download _cache
 .for dep in ${LIB_DEPENDS}
 	@${MAKE} -C ${NUBOROOT}/${dep} _cache
 	@ln -f ${CACHE}/${dep}/*.dk ${CACHE}/${_LIBPTH}
-	# Import .depend file of the dependency to check it correctly
-	@cp -f ${CACHE}/${dep}/.depend ${CACHE}/${_LIBPTH}/${dep:S/\//_/g}.mk
-	@echo '.include "${dep:S/\//_/g}.mk"' >> ${CACHE}/${_LIBPTH}/.depend
+	@echo '.include "${CACHE}/${dep}/.depend"' >> ${CACHE}/${_LIBPTH}/.depend
 .endfor
 	@${ECHO_MSG} '===> Proof checking'
 	@${MAKE} -C ${CACHE}/${_LIBPTH} -f ${_MK}/${_check}.mk \
