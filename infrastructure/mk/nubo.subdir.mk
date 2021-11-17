@@ -2,6 +2,11 @@
 
 .include "${NUBOROOT}/infrastructure/mk/nubo.common.mk"
 
+list:
+.for s in ${SUBDIR}
+	@(cd $s && ${MAKE} list)
+.endfor
+
 clean:
 .for s in ${SUBDIR}
 .  if defined(clean)

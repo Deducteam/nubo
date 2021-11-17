@@ -134,6 +134,9 @@ lint: ${_NAME}.tgz
 makesum: ${_NAME}.tgz
 	${_PERLSCRIPT}/makesum.pl ${.ALLSRC}
 
+list:
+	@echo ${.CURDIR:S/${NUBOROOT}//}
+
 clean: _internal-clean
 
 check: _internal-check

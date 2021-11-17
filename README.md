@@ -200,6 +200,7 @@ The available targets are
 - *lint*: performs sanity checks on a package.
 - *makesum*: computes the checksum of the library package and replace it in the
   blueprint.
+- *list*: list available libraries.
 - *clean*: clean content. By default, clean the blueprint directory. It can be
   invoked as `make clean='[work build]'.
   - _work_: clean the blueprint directory (remove archives and uncompressed
