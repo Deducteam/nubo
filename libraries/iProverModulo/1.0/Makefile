@@ -2,10 +2,10 @@ LIB_NAME    = iProverModulo
 LIB_VERSION = 1.0
 LIB_MD5     = cacd71d3d3a0378ed679ef9c4168de89
 LIB_ORIGIN  = # TODO
-DK_VERSION  = 2
+SYNTAX      = dk
 TOOLING     = # TODO
-LIB_DEPENDS =
-ENCODING    = 
+LIB_DEPENDS = # TODO: probably FOL
+ENCODING    = # TODO: probably FOL
 MAIN        = AGT003p1_prf \
 	      AGT003p2_prf \
 	      AGT004p1_prf \
@@ -3390,4 +3390,4 @@ MAIN        = AGT003p1_prf \
 	      TOP028p1_prf \
 	      TOP034p1_prf \
 
-.include "${NUBOROOT}/mk/library.mk"
+.include "${NUBOROOT}/infrastructure/mk/nubo.library.mk"

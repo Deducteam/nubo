@@ -1,0 +1,15 @@
+%% vim: set tw=72:
+type: stem
+key: dk
+description: The syntax parsed by Dedukti 2.6 and 2.7 without commands
+ (hash-prefixed keywords). It includes "def" and "thm".
+%%
+type: option
+key: local
+description: A "local" keyword prefixing symbol declaration to specify
+ that the definition must not be written in the signature.
+%%
+type: option
+key: cmds
+description: Hash-prefixed commands like "#NAME", "#REQUIRE" or "#EVAL".
+%%

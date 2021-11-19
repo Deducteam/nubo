@@ -3,6 +3,6 @@ LIB_VERSION = 1.0
 LIB_FLAVOUR =
 LIB_MD5     = 96d0964282cef202d15bb2dad8dae9a5
 LIB_ORIGIN  = https://github.com/Deducteam/Libraries
-DK_VERSION  = 2:master
+SYNTAX      = dk
 
-.include "../../../mk/library.mk"
+.include "${NUBOROOT}/infrastructure/mk/nubo.library.mk"
