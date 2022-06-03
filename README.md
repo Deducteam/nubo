@@ -136,8 +136,8 @@ nubo/
 Syntax specifier
 ----------------
 
-Proofs are written in a concrete syntax that can be
-identified by a syntax specification which conforms to the pattern
+Expressions are written in a concrete syntax that can be
+identified by a syntax specifier which conforms to the pattern
 ```
 stem [options]
 ```
@@ -176,15 +176,15 @@ Packaged libraries
 Libraries are packaged into gzipped tarballs with the extension `.tgz` for
 distribution.
 Each library identified by a
-[library name specification](#library-name) _libname_ is
+[library name specification](#library-name): _libname_ is
 packaged as `libname.tgz`. Such an archive must contain
 
-- the expressions (`.dk` files),
+- the modules that make up the library (`.dk` files),
 
-- a [Makefile][2] dependency list named `.depend` listing the dependencies
+- a (POSIX) [Makefile][2] dependency list named `.depend` listing the dependencies
   between the modules.
 
-Proofs are expected to be in the same directory as the dependency file.
+Modules are expected to be in the same directory as the dependency file.
 
 For instance, the archive of `arith_fermat-1.0-sttfa` is available at
 `${PKG_PATH}/arith_fermat-1.0-sttfa.tgz` (see the documentation of
