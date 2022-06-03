@@ -10,5 +10,6 @@ jobs:
           eval $(opam env)
           opam install dedukti.2.6.0 --yes
           eval $(opam env)
+          ls # It doesn't want to cd
           cd 'libraries/arith_fermat/sttfa,1.0/' || exit 1
           NUBOROOT=${{ github.workspace }} bmake check
