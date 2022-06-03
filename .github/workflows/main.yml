@@ -12,7 +12,8 @@ jobs:
           opam install dedukti.2.6.0 --yes
       - name: Check out repository
         uses: actions/checkout@v3
-      - run: |
+      - name: Proof check arith_fermat-1.0-sttfa
+        run: |
           eval $(opam env)
           cd 'libraries/arith_fermat/sttfa,1.0/' || exit 1
           NUBOROOT=${{ github.workspace }} bmake check
