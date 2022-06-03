@@ -1,13 +1,24 @@
-Nubo: a repository for Dedukti proof blueprints
-===============================================
+Nubo: a repository for Dedukti developments
+===========================================
 
-This repository centralises meta data concerning Dedukti proofs. These metadata
-ought to be structured enough so that proofs may be used practically. We call
-_proofs_ some archived development expressed in Dedukti, _module_ a file of
-proofs and _library_ a set of modules.
+This repository centralises metadata concerning Dedukti developments. 
+These metadata ought to be structured enough so that developments 
+may be processed by programs. 
+We call _expression_ any string understood by Dedukti:
+it can be the declaration of a type `Nat` in Dedukti,
+a set of declarations and definitions, a collection of definitions,
+declarations and theorems.
+We call _module_ a Dedukti file containing proofs. The file `nat.dk` containing
+```
+Nat: Type.
+z: Nat
+s: Nat -> Nat
+```
+is a module containing expressions.
+We call _library_ a set of modules which are related by topic are dependency.
 
-Blueprint specification
------------------------
+Blueprint
+---------
 
 We call *blueprint* a file that holds metadata about a library.
 
@@ -54,8 +65,8 @@ miscellaneous tasks using targets defined in `infrastructure/mk/library.mk`.
 More information on these targets are given in
 [How to use this repository](#how-to-use-this-repository).
  
-Library name specification
---------------------------
+Library name
+------------
 
 Each library has a name which consists of 3 parts
 
@@ -84,8 +95,8 @@ Version comparison is done using a lexicographic alphabetic order.
 
 _This section is based on the manual page packages-specs(7) of OpenBSD_
 
-Library path specification
---------------------------
+Library path
+------------
 
 Each location in the library tree is uniquely identified by a *libpath*.
 
@@ -122,8 +133,8 @@ nubo/
 **Note:** in the previous example, each `Makefile` is a
 [*blueprint*](#blueprint-specification).
 
-Syntax specification
---------------------
+Syntax specifier
+----------------
 
 Proofs are written in a concrete syntax that can be
 identified by a syntax specification which conforms to the pattern
@@ -146,8 +157,8 @@ following fields:
 - `description`: a short description of the grammar or the syntax extension
   introduced by the record.
 
-Tooling specification
----------------------
+Tooling
+-------
 
 The file `TOOLS` gathers information on the tools that may be used to translate
 proofs or to operate on translated proofs. It follows the [record jar][1] 
