@@ -26,26 +26,26 @@ A *blueprint* is a BSD flavoured [Makefile][2] (see [[3]] for POSIX makefiles)
 defining the following variables:
 
 - `LIB_NAME`: name of the library. This is not the [library
-  name](#library-name-specification)
+  name](#library-name)
 
 - `LIB_VERSION`: version of the library.
 
 - `LIB_FLAVOUR`: denotes some options used in the generation of the library.
   This field is optional.
 
-- `LIB_DEPENDS`: a list of [library paths](#library-path-specification) on
+- `LIB_DEPENDS`: a list of [library paths](#library-path) on
   which the library depends.
 
 - `LIB_ORIGIN`: URL to the original files of the library, as distributed by the
   authors.
 
-- `ENCODING`: a list of [library path](#library-path-specification) that
+- `ENCODING`: a list of [library path](#library-path) that
   specifies the encoding of the logic the library is expressed into. It must be
   a (possibly empty) subset of `LIB_DEPENDS`. This field serves interoperability
   purposes.
  
 - `SYNTAX`: concrete syntax the library is written in. See the [syntax
-  specification](#syntax-specification).
+  specification](#syntax-specifier).
 
 - `TOOLING`: a list of tools used to translate proofs. A tool is specified by
   a string `<name>:<version>` where `<name>` is the name of the tool, and
@@ -102,7 +102,7 @@ Each location in the library tree is uniquely identified by a *libpath*.
 
 Every *libpath* conforms to the pattern `cat/stem/[flavour,]version` 
 where `stem`, `version` and `flavour` are defined in the
-[name specification](#library-name-specification). The `cat` (for
+[name specification](#library-name). The `cat` (for
 category) part refers to the first directory at the root of the library tree.
 The `flavour,` part is optional.
 
@@ -131,7 +131,7 @@ nubo/
 ```
 
 **Note:** in the previous example, each `Makefile` is a
-[*blueprint*](#blueprint-specification).
+[*blueprint*](#blueprint).
 
 Syntax specifier
 ----------------
@@ -176,10 +176,10 @@ Packaged libraries
 Libraries are packaged into gzipped tarballs with the extension `.tgz` for
 distribution.
 Each library identified by a
-[library name specification](#library-name-specification) _libname_ is
+[library name specification](#library-name) _libname_ is
 packaged as `libname.tgz`. Such an archive must contain
 
-- the proofs (`.dk` files),
+- the expressions (`.dk` files),
 
 - a [Makefile][2] dependency list named `.depend` listing the dependencies
   between the modules.
@@ -219,7 +219,7 @@ The available targets are
   - _build_: clean typechecked files.
 
 These commands must be called in the same directory as the
-[blueprint](#blueprint-specification). For example, to download
+[blueprint](#blueprint). For example, to download
 `arith_fermat-1.0-sttfa`,
 
 ``` sh
@@ -272,7 +272,7 @@ Notes
 -----
 
 It is the user's responsability to install softwares and
-[tools](#tooling-specification) in their appropriate version.
+[tools](#tooling) in their appropriate version.
 
 Upcoming
 --------
