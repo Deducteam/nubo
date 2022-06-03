@@ -4,12 +4,15 @@ jobs:
   check-arith-fermat:
     runs-on: ubuntu-latest
     steps:
-      - run: |
+      - name: Setup environment
+        run: |
           sudo apt install --yes opam m4 bmake
           opam init --yes
           eval $(opam env)
           opam install dedukti.2.6.0 --yes
+      - name: Check out repository
+        uses: actions/checkout@v3
+      - run: |
           eval $(opam env)
-          ls # It doesn't want to cd
           cd 'libraries/arith_fermat/sttfa,1.0/' || exit 1
           NUBOROOT=${{ github.workspace }} bmake check
