@@ -1,9 +1,9 @@
 Nubo: a repository for Dedukti developments
 ===========================================
 
-This repository centralises metadata concerning Dedukti developments. 
-These metadata ought to be structured enough so that developments 
-may be processed by programs. 
+This repository centralises metadata concerning Dedukti developments.
+These metadata ought to be structured enough so that developments
+may be processed by programs.
 We call _expression_ any string understood by Dedukti:
 it can be the declaration of a type `Nat` in Dedukti,
 a set of declarations and definitions, a collection of definitions,
@@ -22,8 +22,7 @@ Blueprint
 
 We call *blueprint* a file that holds metadata about a library.
 
-A *blueprint* is a BSD flavoured [Makefile][2] (see [[3]] for POSIX makefiles)
-defining the following variables:
+A *blueprint* is a BSD flavoured [Makefile][2] defining the following variables:
 
 - `LIB_NAME`: name of the library. This is not the [library
   name](#library-name)
@@ -43,7 +42,7 @@ defining the following variables:
   specifies the encoding of the logic the library is expressed into. It must be
   a (possibly empty) subset of `LIB_DEPENDS`. This field serves interoperability
   purposes.
- 
+
 - `SYNTAX`: concrete syntax the library is written in. See the [syntax
   specification](#syntax-specifier).
 
@@ -58,13 +57,14 @@ defining the following variables:
   as dependencies.
 
 - `FLAGS`: flags that may be passed to the checker.
-  
+
 **Note:**
 These variables not only serve informative purposes, they can be used to fulfill
-miscellaneous tasks using targets defined in `infrastructure/mk/library.mk`.
+miscellaneous tasks using targets defined in
+[`infrastructure/mk/library.mk`](./infrastructure/mk/library.mk).
 More information on these targets are given in
 [How to use this repository](#how-to-use-this-repository).
- 
+
 Library name
 ------------
 
@@ -100,7 +100,7 @@ Library path
 
 Each location in the library tree is uniquely identified by a *libpath*.
 
-Every *libpath* conforms to the pattern `cat/stem/[flavour,]version` 
+Every *libpath* conforms to the pattern `cat/stem/[flavour,]version`
 where `stem`, `version` and `flavour` are defined in the
 [name specification](#library-name). The `cat` (for
 category) part refers to the first directory at the root of the library tree.
@@ -108,8 +108,9 @@ The `flavour,` part is optional.
 
 Such a *libpath* locates uniquely a library in the library tree.
 
-For instance, `arithmetic/arith_fermat/sttfa,1.0` is the location of the library
-`arith_fermat` version `1.0` in its `sttfa` flavour.
+For instance, `libraries/arith_fermat/sttfa,1.0` is the location of the library
+`arith_fermat` version `1.0` in its `sttfa` flavour, its blueprint is at
+[`libraries/arith_fermat/sttfa,1.0`](./libraries/arith_fermat/sttfa,1.0/Makefile).
 
 As an example, the overall structure of the library tree may look like this,
 ```
@@ -161,7 +162,7 @@ Tooling
 -------
 
 The file `TOOLS` gathers information on the tools that may be used to translate
-proofs or to operate on translated proofs. It follows the [record jar][1] 
+proofs or to operate on translated proofs. It follows the [record jar][1]
 format.
 
 A record must at least contain the fields `name` and `homepage`. Any other field
@@ -181,7 +182,7 @@ packaged as `libname.tgz`. Such an archive must contain
 
 - the modules that make up the library (`.dk` files),
 
-- a (POSIX) [Makefile][2] dependency list named `.depend` listing the dependencies
+- a (POSIX) [Makefile][3] dependency list named `.depend` listing the dependencies
   between the modules.
 
 Modules are expected to be in the same directory as the dependency file.
@@ -207,7 +208,7 @@ The available targets are
 - *check*: check the library. By defaults it uses Dedukti to check the library.
   It can be invoked as `make check=CHECKER` where `CHECKER` is the name of a
   known checker. Currently available are `dedukti` and `kontroli`.
-- *package*: create a library package from the downloaded files. 
+- *package*: create a library package from the downloaded files.
 - *lint*: performs sanity checks on a package.
 - *makesum*: computes the checksum of the library package and replace it in the
   blueprint.
@@ -264,10 +265,10 @@ designed an encoding; you may submit it to Nubo.
     the new library in its parent directory's makefile, e.g. for
     `libraries/arith_fermat/`, add it to `libraries/Makefile`, commit and email
     a patch (see `git-format-patch(1)`) or create a pull request.
-    
+
 Steps 2 to 4 can be automated using `make new` at _root_. Step 6 can be automated
 using [`dkdep`](https://github.com/Deducteam/dedukti).
- 
+
 Notes
 -----
 
