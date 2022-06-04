@@ -229,7 +229,7 @@ make download
 ```
 
 The following parameters can be set to alter the user interface:
-- *ECHO_MSG*: process progress messages with this command.
+- *ECHO_MSG*: handle progress messages with the command given as parameter.
 - *PROGRESS_METER*: set to `No` to disable the library download progress bar.
 
 To check the same library without output (where `true` refers to the shell
