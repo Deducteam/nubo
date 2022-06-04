@@ -228,7 +228,16 @@ cd libraries/arith_fermat/sttfa,1.0
 make download
 ```
 
-More documentation on targets is available in `infrastructure/mk/README.md`.
+The following parameters can be set to alter the user interface:
+- *ECHO_MSG*: process progress messages with this command.
+- *PROGRESS_METER*: set to `No` to disable the library download progress bar.
+
+To check the same library without output (where `true` refers to the shell
+function that returns 0, and does not mean that messages are activated),
+```sh
+cd libraries/arith_fermat/sttfa,1.0
+make ECHO_MSG=true PROGRESS_METER=No check
+```
 
 Contributing to Nubo
 --------------------

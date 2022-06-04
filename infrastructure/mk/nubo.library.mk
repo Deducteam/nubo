@@ -27,7 +27,7 @@ CACHE    ?= ${NUBOROOT}/_cache
 PROGRESS_METER ?= Yes
 
 # Binaries
-.if ${PROGRESS_METER:L} == 'yes'
+.if ${PROGRESS_METER:tl} == yes
 FETCH_CMD ?= curl --progress-bar
 .else
 FETCH_CMD ?= curl --silent
