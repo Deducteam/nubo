@@ -40,7 +40,7 @@ while (! $approved) {
 
     print 'Flavour []: ';
     $flavour = ask();
-    $flavour =~ /\w+/ or die "Invalid flavour";
+    $flavour =~ /\w*/ or die "Invalid flavour";
 
     print 'Library version [1.0]: ';
     $version = ask('1.0');
