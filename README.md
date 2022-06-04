@@ -61,7 +61,7 @@ A *blueprint* is a BSD flavoured [Makefile][2] defining the following variables:
 **Note:**
 These variables not only serve informative purposes, they can be used to fulfill
 miscellaneous tasks using targets defined in
-[`infrastructure/mk/library.mk`](./infrastructure/mk/library.mk).
+[`infrastructure/mk/nubo.library.mk`](./infrastructure/mk/library.mk).
 More information on these targets are given in
 [How to use this repository](#how-to-use-this-repository).
 
@@ -109,8 +109,8 @@ The `flavour,` part is optional.
 Such a *libpath* locates uniquely a library in the library tree.
 
 For instance, `libraries/arith_fermat/sttfa,1.0` is the location of the library
-`arith_fermat` version `1.0` in its `sttfa` flavour, its blueprint is at
-[`libraries/arith_fermat/sttfa,1.0`](./libraries/arith_fermat/sttfa,1.0/Makefile).
+`arith_fermat` version `1.0` in its `sttfa` flavour, its blueprint is
+[`libraries/arith_fermat/sttfa,1.0/Makefile`](./libraries/arith_fermat/sttfa,1.0/Makefile).
 
 As an example, the overall structure of the library tree may look like this,
 ```
