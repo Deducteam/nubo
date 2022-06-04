@@ -200,8 +200,8 @@ _make_.
 **Caution:** [*BSD* _make_](https://man.netbsd.org/make.1) must be used,
 Linux users must invoke `bmake` rather than `make`.
 
-**Caution:** the variable `NUBOROOT` must be set for most of these
-commands to work.
+**Caution:** the variable `NUBOROOT` must contain the path of the local clone
+of this repository for most of these commands to work.
 
 The available targets are
 - *download*: download and extracts the source files of the library,
