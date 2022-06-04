@@ -1,40 +1,50 @@
-Nubo: a repository for Dedukti proof blueprints
-===============================================
+Nubo: a repository for Dedukti developments
+===========================================
 
-This repository centralises meta data concerning Dedukti proofs. These metadata
-ought to be structured enough so that proofs may be used practically. We call
-_proofs_ some archived development expressed in Dedukti, _module_ a file of
-proofs and _library_ a set of modules.
+This repository centralises metadata concerning Dedukti developments.
+These metadata ought to be structured enough so that developments
+may be processed by programs.
+We call _expression_ any string understood by Dedukti:
+it can be the declaration of a type `Nat` in Dedukti,
+a set of declarations and definitions, a collection of definitions,
+declarations and theorems.
+We call _module_ a Dedukti file containing proofs. The file `nat.dk` containing
+```
+Nat: Type.
+z: Nat
+s: Nat -> Nat
+```
+is a module containing expressions.
+We call _library_ a set of modules which are related by topic or dependency.
 
-Blueprint specification
------------------------
+Blueprint
+---------
 
 We call *blueprint* a file that holds metadata about a library.
 
-A *blueprint* is a BSD flavoured [Makefile][2] (see [[3]] for POSIX makefiles)
-defining the following variables:
+A *blueprint* is a BSD flavoured [Makefile][2] defining the following variables:
 
 - `LIB_NAME`: name of the library. This is not the [library
-  name](#library-name-specification)
+  name](#library-name)
 
 - `LIB_VERSION`: version of the library.
 
 - `LIB_FLAVOUR`: denotes some options used in the generation of the library.
   This field is optional.
 
-- `LIB_DEPENDS`: a list of [library paths](#library-path-specification) on
+- `LIB_DEPENDS`: a list of [library paths](#library-path) on
   which the library depends.
 
 - `LIB_ORIGIN`: URL to the original files of the library, as distributed by the
   authors.
 
-- `ENCODING`: a list of [library path](#library-path-specification) that
+- `ENCODING`: a list of [library path](#library-path) that
   specifies the encoding of the logic the library is expressed into. It must be
   a (possibly empty) subset of `LIB_DEPENDS`. This field serves interoperability
   purposes.
- 
+
 - `SYNTAX`: concrete syntax the library is written in. See the [syntax
-  specification](#syntax-specification).
+  specification](#syntax-specifier).
 
 - `TOOLING`: a list of tools used to translate proofs. A tool is specified by
   a string `<name>:<version>` where `<name>` is the name of the tool, and
@@ -47,15 +57,16 @@ defining the following variables:
   as dependencies.
 
 - `FLAGS`: flags that may be passed to the checker.
-  
+
 **Note:**
 These variables not only serve informative purposes, they can be used to fulfill
-miscellaneous tasks using targets defined in `infrastructure/mk/library.mk`.
+miscellaneous tasks using targets defined in
+[`infrastructure/mk/nubo.library.mk`](./infrastructure/mk/nubo.library.mk).
 More information on these targets are given in
 [How to use this repository](#how-to-use-this-repository).
- 
-Library name specification
---------------------------
+
+Library name
+------------
 
 Each library has a name which consists of 3 parts
 
@@ -84,21 +95,22 @@ Version comparison is done using a lexicographic alphabetic order.
 
 _This section is based on the manual page packages-specs(7) of OpenBSD_
 
-Library path specification
---------------------------
+Library path
+------------
 
 Each location in the library tree is uniquely identified by a *libpath*.
 
-Every *libpath* conforms to the pattern `cat/stem/[flavour,]version` 
+Every *libpath* conforms to the pattern `cat/stem/[flavour,]version`
 where `stem`, `version` and `flavour` are defined in the
-[name specification](#library-name-specification). The `cat` (for
+[name specification](#library-name). The `cat` (for
 category) part refers to the first directory at the root of the library tree.
 The `flavour,` part is optional.
 
 Such a *libpath* locates uniquely a library in the library tree.
 
-For instance, `arithmetic/arith_fermat/sttfa,1.0` is the location of the library
-`arith_fermat` version `1.0` in its `sttfa` flavour.
+For instance, `libraries/arith_fermat/sttfa,1.0` is the location of the library
+`arith_fermat` version `1.0` in its `sttfa` flavour, its blueprint is
+[`libraries/arith_fermat/sttfa,1.0/Makefile`](./libraries/arith_fermat/sttfa,1.0/Makefile).
 
 As an example, the overall structure of the library tree may look like this,
 ```
@@ -120,13 +132,13 @@ nubo/
 ```
 
 **Note:** in the previous example, each `Makefile` is a
-[*blueprint*](#blueprint-specification).
+[*blueprint*](#blueprint).
 
-Syntax specification
---------------------
+Syntax specifier
+----------------
 
-Proofs are written in a concrete syntax that can be
-identified by a syntax specification which conforms to the pattern
+Expressions are written in a concrete syntax that can be
+identified by a syntax specifier which conforms to the pattern
 ```
 stem [options]
 ```
@@ -146,11 +158,11 @@ following fields:
 - `description`: a short description of the grammar or the syntax extension
   introduced by the record.
 
-Tooling specification
----------------------
+Tooling
+-------
 
 The file `TOOLS` gathers information on the tools that may be used to translate
-proofs or to operate on translated proofs. It follows the [record jar][1] 
+proofs or to operate on translated proofs. It follows the [record jar][1]
 format.
 
 A record must at least contain the fields `name` and `homepage`. Any other field
@@ -165,15 +177,15 @@ Packaged libraries
 Libraries are packaged into gzipped tarballs with the extension `.tgz` for
 distribution.
 Each library identified by a
-[library name specification](#library-name-specification) _libname_ is
+[library name specification](#library-name): _libname_ is
 packaged as `libname.tgz`. Such an archive must contain
 
-- the proofs (`.dk` files),
+- the modules that make up the library (`.dk` files),
 
-- a [Makefile][2] dependency list named `.depend` listing the dependencies
+- a (POSIX) [Makefile][3] dependency list named `.depend` listing the dependencies
   between the modules.
 
-Proofs are expected to be in the same directory as the dependency file.
+Modules are expected to be in the same directory as the dependency file.
 
 For instance, the archive of `arith_fermat-1.0-sttfa` is available at
 `${PKG_PATH}/arith_fermat-1.0-sttfa.tgz` (see the documentation of
@@ -188,15 +200,15 @@ _make_.
 **Caution:** [*BSD* _make_](https://man.netbsd.org/make.1) must be used,
 Linux users must invoke `bmake` rather than `make`.
 
-**Caution:** the variable `NUBOROOT` must be set for most of these
-commands to work.
+**Caution:** the variable `NUBOROOT` must contain the path of the local clone
+of this repository for most of these commands to work.
 
 The available targets are
 - *download*: download and extracts the source files of the library,
 - *check*: check the library. By defaults it uses Dedukti to check the library.
   It can be invoked as `make check=CHECKER` where `CHECKER` is the name of a
   known checker. Currently available are `dedukti` and `kontroli`.
-- *package*: create a library package from the downloaded files. 
+- *package*: create a library package from the downloaded files.
 - *lint*: performs sanity checks on a package.
 - *makesum*: computes the checksum of the library package and replace it in the
   blueprint.
@@ -208,7 +220,7 @@ The available targets are
   - _build_: clean typechecked files.
 
 These commands must be called in the same directory as the
-[blueprint](#blueprint-specification). For example, to download
+[blueprint](#blueprint). For example, to download
 `arith_fermat-1.0-sttfa`,
 
 ``` sh
@@ -216,7 +228,16 @@ cd libraries/arith_fermat/sttfa,1.0
 make download
 ```
 
-More documentation on targets is available in `infrastructure/mk/README.md`.
+The following parameters can be set to alter the user interface:
+- *ECHO_MSG*: handle progress messages with the command given as parameter.
+- *PROGRESS_METER*: set to `No` to disable the library download progress bar.
+
+To check the same library without output (where `true` refers to the shell
+function that returns 0, and does not mean that messages are activated),
+```sh
+cd libraries/arith_fermat/sttfa,1.0
+make ECHO_MSG=true PROGRESS_METER=No check
+```
 
 Contributing to Nubo
 --------------------
@@ -253,15 +274,15 @@ designed an encoding; you may submit it to Nubo.
     the new library in its parent directory's makefile, e.g. for
     `libraries/arith_fermat/`, add it to `libraries/Makefile`, commit and email
     a patch (see `git-format-patch(1)`) or create a pull request.
-    
+
 Steps 2 to 4 can be automated using `make new` at _root_. Step 6 can be automated
 using [`dkdep`](https://github.com/Deducteam/dedukti).
- 
+
 Notes
 -----
 
 It is the user's responsability to install softwares and
-[tools](#tooling-specification) in their appropriate version.
+[tools](#tooling) in their appropriate version.
 
 Upcoming
 --------
