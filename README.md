@@ -15,7 +15,7 @@ z: Nat
 s: Nat -> Nat
 ```
 is a module containing expressions.
-We call _library_ a set of modules which are related by topic are dependency.
+We call _library_ a set of modules which are related by topic or dependency.
 
 Blueprint
 ---------
