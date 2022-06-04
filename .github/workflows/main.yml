@@ -4,15 +4,36 @@ jobs:
   check-arith-fermat:
     runs-on: ubuntu-latest
     steps:
-      - name: Setup environment
+      - name: Setup Opam
         run: |
           sudo apt install --yes opam m4 bmake
           opam init --yes
-          eval $(opam env)
           opam install dedukti.2.6.0 --yes
+
+      - name: Setup Rust
+        run: |
+          sudo apt install curl
+          curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs > rustup-init
+          chmod +x rustup-init
+          ./rustup-init -v -y
+          cargo install --git https://github.com/01mf02/kontroli-rs
+
       - name: Check out repository
         uses: actions/checkout@v3
-      - name: Proof check arith_fermat-1.0-sttfa
+
+      - name: Proof check (dkcheck) arith_fermat-1.0-sttfa
+        run: |
+          eval $(opam env)
+          cd 'libraries/arith_fermat/sttfa,1.0/' || exit 1
+          NUBOROOT=${{ github.workspace }} bmake check=dedukti
+
+      - name: Proof check (kocheck) arith_fermat-1.0-sttfa
+        run: |
+          source "$HOME"/.cargo/env
+          cd 'libraries/arith_fermat/sttfa,1.0/' || exit 1
+          NUBOROOT=${{ github.workspace }} bmake check=kontroli
+
+      - name: Proof check (default) arith_fermat-1.0-sttfa
         run: |
           eval $(opam env)
           cd 'libraries/arith_fermat/sttfa,1.0/' || exit 1
