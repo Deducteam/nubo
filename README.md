@@ -61,7 +61,7 @@ A *blueprint* is a BSD flavoured [Makefile][2] defining the following variables:
 **Note:**
 These variables not only serve informative purposes, they can be used to fulfill
 miscellaneous tasks using targets defined in
-[`infrastructure/mk/nubo.library.mk`](./infrastructure/mk/library.mk).
+[`infrastructure/mk/nubo.library.mk`](./infrastructure/mk/nubo.library.mk).
 More information on these targets are given in
 [How to use this repository](#how-to-use-this-repository).
 
