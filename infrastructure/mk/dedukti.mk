@@ -1,4 +1,4 @@
-CHECK ?= dkcheck 2> /dev/null
+CHECK ?= dk check 2> /dev/null
 
 .for tg in ${.TARGETS}
 ${tg}: ${tg}.dko
