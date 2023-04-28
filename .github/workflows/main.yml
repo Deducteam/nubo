@@ -16,7 +16,7 @@ jobs:
           curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs > rustup-init
           chmod +x rustup-init
           ./rustup-init -v -y
-          cargo install --git https://github.com/01mf02/kontroli-rs
+          cargo install --path kocheck
 
       - name: Check out repository
         uses: actions/checkout@v3
